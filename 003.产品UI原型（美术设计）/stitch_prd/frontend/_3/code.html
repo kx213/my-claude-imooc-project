@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"primary-container":"#4fb3a9","surface-container":"#e3efff","tertiary-container":"#e68d6d","surface":"#f7f9ff","error":"#ba1a1a","secondary-fixed":"#d8e5e3","on-error-container":"#93000a","surface-container-high":"#d9eaff","surface-container-lowest":"#ffffff","on-primary-container":"#00413c","on-primary-fixed-variant":"#00504a","secondary":"#55615f","surface-dim":"#c9dcf3","mint-surface":"#F4FAF9","on-tertiary":"#ffffff","outline":"#6e7977","tertiary-fixed-dim":"#ffb59b","surface-bright":"#f7f9ff","on-primary-fixed":"#00201d","tertiary":"#924a2f","on-secondary":"#ffffff","on-surface":"#091d2e","on-secondary-fixed-variant":"#3d4948","on-secondary-container":"#5b6765","warm-amber":"#F39C12","on-tertiary-fixed-variant":"#75331a","on-primary":"#ffffff","primary-fixed":"#92f3e8","pure-white":"#FFFFFF","surface-tint":"#006a63","on-tertiary-fixed":"#380d00","soft-rose":"#E74C3C","outline-variant":"#bdc9c6","primary-fixed-dim":"#75d7cc","inverse-surface":"#203243","secondary-fixed-dim":"#bcc9c7","tertiary-fixed":"#ffdbcf","background":"#f7f9ff","inverse-primary":"#75d7cc","surface-variant":"#d1e4fb","surface-container-highest":"#d1e4fb","primary":"#006a63","secondary-container":"#d8e5e3","surface-container-low":"#edf4ff","inverse-on-surface":"#e8f2ff","on-error":"#ffffff","on-background":"#091d2e","error-container":"#ffdad6","on-tertiary-container":"#64270f","on-surface-variant":"#3e4947","on-secondary-fixed":"#121e1d"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"space-md":"1rem","margin":"1.25rem","gutter":"1rem","space-xs":"0.25rem","space-xl":"2.5rem","space-sm":"0.5rem","space-lg":"1.5rem"},"fontFamily":{"body-sm":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"],"headline-sm":["Plus Jakarta Sans"],"label-md":["Plus Jakarta Sans"],"label-sm":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"],"body-md":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"]},"fontSize":{"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"headline-md":["24px",{"lineHeight":"32px","fontWeight":"600"}],"headline-sm":["18px",{"lineHeight":"24px","fontWeight":"600"}],"label-md":["14px",{"lineHeight":"20px","fontWeight":"500"}],"label-sm":["12px",{"lineHeight":"16px","fontWeight":"500"}],"headline-lg":["32px",{"lineHeight":"40px","fontWeight":"700"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}],"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}]}}}};</script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/></head><body class="bg-surface font-body-md text-on-surface"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col pt-space-xl pb-space-xl"><div class="px-space-lg mb-space-xl flex items-center gap-space-sm"><img alt="口袋账本 Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5Zvyr3u1S-mYmh-GRw8KHTSSB_r_LcP2CHUX7P9nwG2GnStlwmnU9koP7L-3xZZOZgcDQKl1WhFzkT9RTKLotw42-leVJF6hRVCQdNfzqA7WZU_r8Ih7bCu_KaoI679gr9_kMmJGYM5W1mJQdyfWuU8XLlLIlt96tkKwnnL2ZkweJTzifNgnrC8Q1LYHzsfCtT4puBwOwViOHi9ge2YjIMMkQ6XaJs85L8K4m6Dte-pKwFaZGWSDCAQ"/><span class="text-headline-sm font-bold tracking-tight text-on-surface">口袋账本</span></div><nav class="flex-1 px-space-md space-y-space-xs" data-active-classes="bg-primary text-on-primary font-bold rounded-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><a class="flex items-center px-space-md py-space-md rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="index" href="#"><span class="material-symbols-outlined mr-space-md">home</span>首页</a><a aria-current="page" class="flex items-center px-space-md py-space-md transition-all bg-primary text-on-primary font-bold rounded-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]" data-path="statistics" href="#"><span class="material-symbols-outlined mr-space-md">bar_chart</span>统计</a><a class="flex items-center px-space-md py-space-md rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="budget" href="#"><span class="material-symbols-outlined mr-space-md">account_balance_wallet</span>预算</a><a class="flex items-center px-space-md py-space-md rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="profile" href="#"><span class="material-symbols-outlined mr-space-md">person</span>我的</a></nav></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs bg-surface-container-high px-space-md py-space-xs rounded-lg text-label-md cursor-pointer text-on-surface"><span class="material-symbols-outlined text-[18px]">book</span><span>默认账本</span><span class="material-symbols-outlined text-[18px]">arrow_drop_down</span></div></div><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-sm"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><span class="text-label-md text-on-surface font-medium">DemoUser</span></div><a class="flex items-center text-error hover:text-on-error-container text-label-md" data-path="login" href="#"><span class="material-symbols-outlined text-[18px] mr-space-xs">logout</span>退出</a></div></header><main class="relative pt-16 bg-surface min-h-screen p-space-xl"><div class="flex flex-col w-full pb-space-xl">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md mb-space-xl">
+<div>
+<h1 class="text-headline-lg font-bold text-on-surface tracking-tight">收支统计报表</h1>
+<p class="text-body-md text-on-surface-variant mt-space-xs">通过直观的数据透视，掌握您的每一笔资金流向与财务健康度。</p>
+</div>
+<div class="flex items-center bg-surface-container-low p-1 rounded-xl self-start">
+<button class="px-space-md py-space-xs rounded-lg text-label-md font-medium text-on-surface-variant transition-all" id="tab-day" onclick="switchTab('day')">日</button>
+<button class="px-space-md py-space-xs rounded-lg text-label-md font-medium text-on-surface-variant transition-all" id="tab-week" onclick="switchTab('week')">周</button>
+<button class="px-space-md py-space-xs rounded-lg text-label-md font-medium bg-primary text-on-primary shadow-sm transition-all" id="tab-month" onclick="switchTab('month')">月</button>
+<button class="px-space-md py-space-xs rounded-lg text-label-md font-medium text-on-surface-variant transition-all" id="tab-year" onclick="switchTab('year')">年</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-lg mb-space-xl">
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-primary/5 rounded-full blur-xl group-hover:bg-primary/10 transition-all"></div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="text-label-md text-on-surface-variant font-medium">期间总收入</span>
+<div class="w-10 h-10 rounded-xl bg-primary-fixed/50 flex items-center justify-center text-on-primary-fixed">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+</div>
+<div class="text-headline-lg font-bold text-on-surface tracking-tight">¥ 12,480.00</div>
+<div class="flex items-center gap-space-xs mt-space-sm text-body-sm text-primary font-medium">
+<span class="material-symbols-outlined text-[16px]">arrow_upward</span>
+<span>较上期 +8.4%</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-tertiary/5 rounded-full blur-xl group-hover:bg-tertiary/10 transition-all"></div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="text-label-md text-on-surface-variant font-medium">期间总支出</span>
+<div class="w-10 h-10 rounded-xl bg-tertiary-fixed/50 flex items-center justify-center text-on-tertiary-fixed">
+<span class="material-symbols-outlined">trending_down</span>
+</div>
+</div>
+<div class="text-headline-lg font-bold text-on-surface tracking-tight">¥ 6,320.50</div>
+<div class="flex items-center gap-space-xs mt-space-sm text-body-sm text-soft-rose font-medium">
+<span class="material-symbols-outlined text-[16px]">arrow_downward</span>
+<span>较上期 -3.2%</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-primary-container/20 rounded-full blur-xl group-hover:bg-primary-container/30 transition-all"></div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="text-label-md text-on-surface-variant font-medium">净结余</span>
+<div class="w-10 h-10 rounded-xl bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed">
+<span class="material-symbols-outlined">account_balance</span>
+</div>
+</div>
+<div class="text-headline-lg font-bold text-primary tracking-tight">¥ 6,159.50</div>
+<div class="flex items-center gap-space-xs mt-space-sm text-body-sm text-on-surface-variant">
+<span>结余率 <strong class="text-on-surface font-semibold">49.3%</strong></span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-lg mb-space-xl">
+<div class="lg:col-span-2 bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-md">
+<div>
+<h2 class="text-headline-sm font-bold text-on-surface">每日收支趋势</h2>
+<p class="text-body-sm text-on-surface-variant">点击柱状图可筛选对应日期的明细数据</p>
+</div>
+<div class="flex items-center gap-space-md text-label-sm">
+<div class="flex items-center gap-space-xs">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+<span class="text-on-surface-variant">收入</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<div class="w-3 h-3 rounded-full bg-tertiary"></div>
+<span class="text-on-surface-variant">支出</span>
+</div>
+</div>
+</div>
+<div class="h-64 w-full flex items-end justify-between gap-2 pt-space-xl pb-space-sm px-space-xs relative">
+<div class="absolute inset-x-0 top-0 bottom-8 flex flex-col justify-between pointer-events-none opacity-20">
+<div class="w-full border-b border-outline"></div>
+<div class="w-full border-b border-outline"></div>
+<div class="w-full border-b border-outline"></div>
+<div class="w-full border-b border-outline"></div>
+</div>
+<div class="flex-1 flex flex-col items-center gap-space-xs group cursor-pointer z-10 h-full justify-end" onclick="filterByDate('10-01')">
+<div class="w-full max-w-[24px] flex items-end justify-center gap-1 h-full">
+<div class="w-2.5 bg-primary rounded-t-sm group-hover:brightness-110 transition-all" style="height: 40%"></div>
+<div class="w-2.5 bg-tertiary rounded-t-sm group-hover:brightness-110 transition-all" style="height: 25%"></div>
+</div>
+<span class="text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">01日</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-space-xs group cursor-pointer z-10 h-full justify-end" onclick="filterByDate('10-05')">
+<div class="w-full max-w-[24px] flex items-end justify-center gap-1 h-full">
+<div class="w-2.5 bg-primary rounded-t-sm group-hover:brightness-110 transition-all" style="height: 80%"></div>
+<div class="w-2.5 bg-tertiary rounded-t-sm group-hover:brightness-110 transition-all" style="height: 60%"></div>
+</div>
+<span class="text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">05日</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-space-xs group cursor-pointer z-10 h-full justify-end" onclick="filterByDate('10-10')">
+<div class="w-full max-w-[24px] flex items-end justify-center gap-1 h-full">
+<div class="w-2.5 bg-primary rounded-t-sm group-hover:brightness-110 transition-all" style="height: 30%"></div>
+<div class="w-2.5 bg-tertiary rounded-t-sm group-hover:brightness-110 transition-all" style="height: 45%"></div>
+</div>
+<span class="text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">10日</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-space-xs group cursor-pointer z-10 h-full justify-end" onclick="filterByDate('10-15')">
+<div class="w-full max-w-[24px] flex items-end justify-center gap-1 h-full">
+<div class="w-2.5 bg-primary rounded-t-sm group-hover:brightness-110 transition-all" style="height: 95%"></div>
+<div class="w-2.5 bg-tertiary rounded-t-sm group-hover:brightness-110 transition-all" style="height: 35%"></div>
+</div>
+<span class="text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">15日</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-space-xs group cursor-pointer z-10 h-full justify-end" onclick="filterByDate('10-20')">
+<div class="w-full max-w-[24px] flex items-end justify-center gap-1 h-full">
+<div class="w-2.5 bg-primary rounded-t-sm group-hover:brightness-110 transition-all" style="height: 50%"></div>
+<div class="w-2.5 bg-tertiary rounded-t-sm group-hover:brightness-110 transition-all" style="height: 70%"></div>
+</div>
+<span class="text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">20日</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-space-xs group cursor-pointer z-10 h-full justify-end" onclick="filterByDate('10-25')">
+<div class="w-full max-w-[24px] flex items-end justify-center gap-1 h-full">
+<div class="w-2.5 bg-primary rounded-t-sm group-hover:brightness-110 transition-all" style="height: 60%"></div>
+<div class="w-2.5 bg-tertiary rounded-t-sm group-hover:brightness-110 transition-all" style="height: 90%"></div>
+</div>
+<span class="text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">25日</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-space-xs group cursor-pointer z-10 h-full justify-end" onclick="filterByDate('10-31')">
+<div class="w-full max-w-[24px] flex items-end justify-center gap-1 h-full">
+<div class="w-2.5 bg-primary rounded-t-sm group-hover:brightness-110 transition-all" style="height: 45%"></div>
+<div class="w-2.5 bg-tertiary rounded-t-sm group-hover:brightness-110 transition-all" style="height: 50%"></div>
+</div>
+<span class="text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">31日</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between">
+<div>
+<h2 class="text-headline-sm font-bold text-on-surface mb-space-xs">支出分类占比</h2>
+<p class="text-body-sm text-on-surface-variant mb-space-md">点击分类可查看详细消费结构</p>
+</div>
+<div class="relative w-44 h-44 mx-auto my-space-md flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<circle class="text-surface-container-high" cx="50" cy="50" fill="transparent" r="40" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-primary cursor-pointer hover:opacity-85 transition-opacity" cx="50" cy="50" fill="transparent" onclick="filterCategory('餐饮')" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="60" stroke-width="12"></circle>
+<circle class="text-tertiary cursor-pointer hover:opacity-85 transition-opacity" cx="50" cy="50" fill="transparent" onclick="filterCategory('购物')" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="180" stroke-width="12"></circle>
+<circle class="text-secondary cursor-pointer hover:opacity-85 transition-opacity" cx="50" cy="50" fill="transparent" onclick="filterCategory('交通')" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="220" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+<span class="text-body-sm text-on-surface-variant">总支出</span>
+<span class="text-headline-sm font-bold text-on-surface">¥6,320</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2 pt-space-sm">
+<div class="text-center p-2 rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container-high transition-colors" onclick="filterCategory('餐饮')">
+<div class="flex items-center justify-center gap-1 mb-1">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="text-label-sm text-on-surface-variant font-medium">餐饮</span>
+</div>
+<span class="text-body-sm font-bold text-on-surface">45%</span>
+</div>
+<div class="text-center p-2 rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container-high transition-colors" onclick="filterCategory('购物')">
+<div class="flex items-center justify-center gap-1 mb-1">
+<div class="w-2 h-2 rounded-full bg-tertiary"></div>
+<span class="text-label-sm text-on-surface-variant font-medium">购物</span>
+</div>
+<span class="text-body-sm font-bold text-on-surface">30%</span>
+</div>
+<div class="text-center p-2 rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container-high transition-colors" onclick="filterCategory('交通')">
+<div class="flex items-center justify-center gap-1 mb-1">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="text-label-sm text-on-surface-variant font-medium">交通</span>
+</div>
+<span class="text-body-sm font-bold text-on-surface">25%</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm mb-space-xl">
+<div class="flex items-center justify-between mb-space-lg">
+<div>
+<h2 class="text-headline-sm font-bold text-on-surface">分类 Top 排行榜</h2>
+<p class="text-body-sm text-on-surface-variant">本期消费主力分类与具体金额对比</p>
+</div>
+<div class="hidden items-center gap-space-xs bg-primary-fixed/55 px-space-md py-space-xs rounded-full text-label-sm text-on-primary-fixed" id="active-filter-badge">
+<span>当前筛选：<strong id="filter-name">餐饮</strong></span>
+<span class="material-symbols-outlined text-[16px] cursor-pointer" onclick="clearFilter()">close</span>
+</div>
+</div>
+<div class="space-y-space-md">
+<div class="group cursor-pointer p-space-sm rounded-xl hover:bg-surface-container-low transition-all" onclick="filterCategory('餐饮')">
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-all">
+<span class="material-symbols-outlined">restaurant</span>
+</div>
+<div>
+<span class="text-label-md font-bold text-on-surface block">餐饮美食</span>
+<span class="text-body-sm text-on-surface-variant">共 28 笔消费</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-headline-sm font-bold text-on-surface block">¥ 2,844.00</span>
+<span class="text-body-sm text-on-surface-variant">占比 45.0%</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full group-hover:brightness-110 transition-all" style="width: 45%"></div>
+</div>
+</div>
+<div class="group cursor-pointer p-space-sm rounded-xl hover:bg-surface-container-low transition-all" onclick="filterCategory('购物')">
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-tertiary/10 flex items-center justify-center text-tertiary group-hover:bg-tertiary group-hover:text-on-tertiary transition-all">
+<span class="material-symbols-outlined">shopping_bag</span>
+</div>
+<div>
+<span class="text-label-md font-bold text-on-surface block">服饰日用</span>
+<span class="text-body-sm text-on-surface-variant">共 12 笔消费</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-headline-sm font-bold text-on-surface block">¥ 1,896.15</span>
+<span class="text-body-sm text-on-surface-variant">占比 30.0%</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full rounded-full group-hover:brightness-110 transition-all" style="width: 30%"></div>
+</div>
+</div>
+<div class="group cursor-pointer p-space-sm rounded-xl hover:bg-surface-container-low transition-all" onclick="filterCategory('交通')">
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-on-secondary transition-all">
+<span class="material-symbols-outlined">directions_car</span>
+</div>
+<div>
+<span class="text-label-md font-bold text-on-surface block">出行交通</span>
+<span class="text-body-sm text-on-surface-variant">共 18 笔消费</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-headline-sm font-bold text-on-surface block">¥ 1,580.35</span>
+<span class="text-body-sm text-on-surface-variant">占比 25.0%</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full group-hover:brightness-110 transition-all" style="width: 25%"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm transition-all" id="transaction-detail-section">
+<div class="flex items-center justify-between mb-space-md">
+<div>
+<h2 class="text-headline-sm font-bold text-on-surface" id="detail-title">联动明细列表</h2>
+<p class="text-body-sm text-on-surface-variant" id="detail-subtitle">展示当前选中分类或日期的账目详情</p>
+</div>
+<span class="text-label-md text-primary font-medium">共 3 条记录</span>
+</div>
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-all">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">restaurant</span>
+</div>
+<div>
+<span class="text-label-md font-bold text-on-surface block">周末朋友聚餐</span>
+<span class="text-body-sm text-on-surface-variant">餐饮美食 · 10月25日 19:30</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-label-md font-bold text-soft-rose block">- ¥ 320.00</span>
+<span class="text-body-sm text-on-surface-variant">微信支付</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-all">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">coffee</span>
+</div>
+<div>
+<span class="text-label-md font-bold text-on-surface block">下午茶咖啡</span>
+<span class="text-body-sm text-on-surface-variant">餐饮美食 · 10月24日 14:15</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-label-md font-bold text-soft-rose block">- ¥ 38.00</span>
+<span class="text-body-sm text-on-surface-variant">支付宝</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-all">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">shopping_cart</span>
+</div>
+<div>
+<span class="text-label-md font-bold text-on-surface block">超市生鲜采购</span>
+<span class="text-body-sm text-on-surface-variant">餐饮美食 · 10月22日 10:00</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-label-md font-bold text-soft-rose block">- ¥ 156.50</span>
+<span class="text-body-sm text-on-surface-variant">银行卡</span>
+</div>
+</div>
+</div>
+</div>
+<script>
+    function switchTab(type) {
+      ['day', 'week', 'month', 'year'].forEach(t => {
+        const btn = document.getElementById('tab-' + t);
+        if (t === type) {
+          btn.className = "px-space-md py-space-xs rounded-lg text-label-md font-medium bg-primary text-on-primary shadow-sm transition-all";
+        } else {
+          btn.className = "px-space-md py-space-xs rounded-lg text-label-md font-medium text-on-surface-variant transition-all";
+        }
+      });
+      showToast('已切换至' + (type === 'day' ? '日' : type === 'week' ? '周' : type === 'month' ? '月' : '年') + '视图');
+    }
+
+    function filterCategory(categoryName) {
+      document.getElementById('active-filter-badge').classList.remove('hidden');
+      document.getElementById('active-filter-badge').classList.add('flex');
+      document.getElementById('filter-name').innerText = categoryName;
+      document.getElementById('detail-title').innerText = categoryName + '分类明细';
+      document.getElementById('detail-subtitle').innerText = '当前正在查看“' + categoryName + '”分类下的所有消费记录';
+      
+      const detailSec = document.getElementById('transaction-detail-section');
+      detailSec.classList.add('ring-2', 'ring-primary', 'ring-offset-2');
+      setTimeout(() => {
+        detailSec.classList.remove('ring-2', 'ring-primary', 'ring-offset-2');
+      }, 600);
+      
+      showToast('已联动筛选：' + categoryName);
+    }
+
+    function filterByDate(dateStr) {
+      document.getElementById('active-filter-badge').classList.remove('hidden');
+      document.getElementById('active-filter-badge').classList.add('flex');
+      document.getElementById('filter-name').innerText = dateStr;
+      document.getElementById('detail-title').innerText = dateStr + '收支明细';
+      document.getElementById('detail-subtitle').innerText = '当前正在查看 ' + dateStr + ' 当天的全部收支流水';
+      showToast('已联动筛选日期：' + dateStr);
+    }
+
+    function clearFilter() {
+      document.getElementById('active-filter-badge').classList.remove('flex');
+      document.getElementById('active-filter-badge').classList.add('hidden');
+      document.getElementById('detail-title').innerText = '联动明细列表';
+      document.getElementById('detail-subtitle').innerText = '展示当前选中分类或日期的账目详情';
+      showToast('已重置筛选条件');
+    }
+
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      if(!container) return;
+      const toast = document.createElement('div');
+      toast.className = 'bg-inverse-surface text-inverse-on-surface px-space-md py-space-sm rounded-xl shadow-lg text-body-md flex items-center gap-space-sm transform translate-y-2 opacity-0 transition-all duration-300 pointer-events-auto';
+      toast.innerHTML = '<span class="material-symbols-outlined text-primary-fixed text-[18px]">info</span><span>' + message + '</span>';
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      }, 10);
+      setTimeout(() => {
+        toast.classList.add('translate-y-2', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
+    }
+  </script>
+</div></main></div><div class="fixed bottom-space-xl right-space-xl z-50 flex flex-col gap-space-sm pointer-events-none" id="toast-container"></div></body></html>

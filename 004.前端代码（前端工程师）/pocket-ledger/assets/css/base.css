@@ -1,0 +1,30 @@
+/* Pocket Ledger — Shared base styles
+ * 来源：原 5 个 HTML 内嵌的 <style>@layer base ... </style> 抽取合并而来
+ * 包含：reset、滚动条、安全区适配等所有页面通用样式
+ */
+@layer base {
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    overscroll-behavior: none;
+  }
+  main > :first-child {
+    margin-top: 0 !important;
+  }
+  main > :last-child {
+    margin-bottom: 0 !important;
+  }
+}
+
+/* 隐藏滚动条但保留滚动能力（移动端友好） */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* 适配 iOS 安全区 */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}

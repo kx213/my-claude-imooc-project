@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"primary-container":"#4fb3a9","surface-container":"#e3efff","tertiary-container":"#e68d6d","surface":"#f7f9ff","error":"#ba1a1a","secondary-fixed":"#d8e5e3","on-error-container":"#93000a","surface-container-high":"#d9eaff","surface-container-lowest":"#ffffff","on-primary-container":"#00413c","on-primary-fixed-variant":"#00504a","secondary":"#55615f","surface-dim":"#c9dcf3","mint-surface":"#F4FAF9","on-tertiary":"#ffffff","outline":"#6e7977","tertiary-fixed-dim":"#ffb59b","surface-bright":"#f7f9ff","on-primary-fixed":"#00201d","tertiary":"#924a2f","on-secondary":"#ffffff","on-surface":"#091d2e","on-secondary-fixed-variant":"#3d4948","on-secondary-container":"#5b6765","warm-amber":"#F39C12","on-tertiary-fixed-variant":"#75331a","on-primary":"#ffffff","primary-fixed":"#92f3e8","pure-white":"#FFFFFF","surface-tint":"#006a63","on-tertiary-fixed":"#380d00","soft-rose":"#E74C3C","outline-variant":"#bdc9c6","primary-fixed-dim":"#75d7cc","inverse-surface":"#203243","secondary-fixed-dim":"#bcc9c7","tertiary-fixed":"#ffdbcf","background":"#f7f9ff","inverse-primary":"#75d7cc","surface-variant":"#d1e4fb","surface-container-highest":"#d1e4fb","primary":"#006a63","secondary-container":"#d8e5e3","surface-container-low":"#edf4ff","inverse-on-surface":"#e8f2ff","on-error":"#ffffff","on-background":"#091d2e","error-container":"#ffdad6","on-tertiary-container":"#64270f","on-surface-variant":"#3e4947","on-secondary-fixed":"#121e1d"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"space-md":"1rem","margin":"1.25rem","gutter":"1rem","space-xs":"0.25rem","space-xl":"2.5rem","space-sm":"0.5rem","space-lg":"1.5rem"},"fontFamily":{"body-sm":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"],"headline-sm":["Plus Jakarta Sans"],"label-md":["Plus Jakarta Sans"],"label-sm":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"],"body-md":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"]},"fontSize":{"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"headline-md":["24px",{"lineHeight":"32px","fontWeight":"600"}],"headline-sm":["18px",{"lineHeight":"24px","fontWeight":"600"}],"label-md":["14px",{"lineHeight":"20px","fontWeight":"500"}],"label-sm":["12px",{"lineHeight":"16px","fontWeight":"500"}],"headline-lg":["32px",{"lineHeight":"40px","fontWeight":"700"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}],"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}]}}}};</script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/></head><body class="bg-surface font-body-md text-on-surface"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col pt-space-xl pb-space-xl"><div class="px-space-lg mb-space-xl flex items-center gap-space-sm"><img alt="口袋账本 Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5Zvyr3u1S-mYmh-GRw8KHTSSB_r_LcP2CHUX7P9nwG2GnStlwmnU9koP7L-3xZZOZgcDQKl1WhFzkT9RTKLotw42-leVJF6hRVCQdNfzqA7WZU_r8Ih7bCu_KaoI679gr9_kMmJGYM5W1mJQdyfWuU8XLlLIlt96tkKwnnL2ZkweJTzifNgnrC8Q1LYHzsfCtT4puBwOwViOHi9ge2YjIMMkQ6XaJs85L8K4m6Dte-pKwFaZGWSDCAQ"/><span class="text-headline-sm font-bold tracking-tight text-on-surface">口袋账本</span></div><nav class="flex-1 px-space-md space-y-space-xs" data-active-classes="bg-primary text-on-primary font-bold rounded-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><a class="flex items-center px-space-md py-space-md rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="index" href="#"><span class="material-symbols-outlined mr-space-md">home</span>首页</a><a class="flex items-center px-space-md py-space-md rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="statistics" href="#"><span class="material-symbols-outlined mr-space-md">bar_chart</span>统计</a><a aria-current="page" class="flex items-center px-space-md py-space-md transition-all bg-primary text-on-primary font-bold rounded-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]" data-path="budget" href="#"><span class="material-symbols-outlined mr-space-md">account_balance_wallet</span>预算</a><a class="flex items-center px-space-md py-space-md rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="profile" href="#"><span class="material-symbols-outlined mr-space-md">person</span>我的</a></nav></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs bg-surface-container-high px-space-md py-space-xs rounded-lg text-label-md cursor-pointer text-on-surface"><span class="material-symbols-outlined text-[18px]">book</span><span>默认账本</span><span class="material-symbols-outlined text-[18px]">arrow_drop_down</span></div></div><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-sm"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><span class="text-label-md text-on-surface font-medium">DemoUser</span></div><a class="flex items-center text-error hover:text-on-error-container text-label-md" data-path="login" href="#"><span class="material-symbols-outlined text-[18px] mr-space-xs">logout</span>退出</a></div></header><main class="relative pt-16 bg-surface min-h-screen p-space-xl"><div class="flex flex-col w-full pb-space-xl">
+<!-- Top Summary Banner & Monthly Overview -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-lg mb-space-xl">
+<!-- Main Total Budget Card -->
+<div class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-space-xl shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="absolute -right-12 -top-12 w-64 h-64 bg-primary/5 rounded-full blur-2xl pointer-events-none"></div>
+<div>
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[28px]" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<span class="font-headline-sm text-on-surface">2023年 10月 预算总览</span>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-on-primary font-label-md px-space-md py-space-sm rounded-xl transition-all shadow-sm flex items-center gap-space-xs cursor-pointer" onclick="openBudgetModal()">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+            设置新预算
+          </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md my-space-lg">
+<div class="bg-surface-container-low p-space-md rounded-xl">
+<span class="text-body-sm text-outline block mb-space-xs">本月总预算</span>
+<span class="font-headline-md text-on-surface">¥8,500.00</span>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl">
+<span class="text-body-sm text-outline block mb-space-xs">已支出金额</span>
+<span class="font-headline-md text-primary">¥6,820.50</span>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl">
+<span class="text-body-sm text-outline block mb-space-xs">剩余可用</span>
+<span class="font-headline-md text-on-surface">¥1,679.50</span>
+</div>
+</div>
+</div>
+<!-- Overall Progress Bar -->
+<div>
+<div class="flex justify-between text-label-sm mb-space-xs">
+<span class="text-on-surface font-medium">总预算消耗进度 (80.2%)</span>
+<span class="text-primary font-medium">正常管控中</span>
+</div>
+<div class="w-full bg-surface-container-low h-3 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-500" style="width: 80.2%"></div>
+</div>
+</div>
+</div>
+<!-- Quick Insights & Health Score -->
+<div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-space-sm mb-space-md">
+<span class="material-symbols-outlined text-warm-amber text-[24px]" style="font-variation-settings: 'FILL' 1;">insights</span>
+<span class="font-headline-sm text-on-surface">健康消费评估</span>
+</div>
+<p class="text-body-md text-on-surface-variant mb-space-lg">
+          本月餐饮支出较上月同期减少 12%，但娱乐购物频次有所上升。建议在月底前控制非必要开支。
+        </p>
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between text-body-sm">
+<span class="text-outline">预算执行健康度</span>
+<span class="text-primary font-bold">良好 (85分)</span>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<span class="text-outline">超支预警分类</span>
+<span class="text-soft-rose font-bold">购物 (已超100%)</span>
+</div>
+</div>
+</div>
+<div class="pt-space-md">
+<button class="w-full py-space-sm bg-surface-container-low hover:bg-surface-container-high text-on-surface text-label-md rounded-xl transition-all cursor-pointer" onclick="triggerToast('warning', '购物预算已超支，触发自动拦截提醒！')">
+          查看超支日志分析
+        </button>
+</div>
+</div>
+</div>
+<!-- Category Budgets Section -->
+<div class="mb-space-xl">
+<div class="flex items-center justify-between mb-space-lg">
+<div>
+<h2 class="font-headline-md text-on-surface">分类预算监测</h2>
+<p class="text-body-sm text-outline">实时监控各项支出，达到 80% 与 100% 将自动发送预警通知</p>
+</div>
+<div class="flex gap-space-sm">
+<button class="px-space-md py-space-sm bg-surface-container-lowest hover:bg-surface-container-low text-on-surface text-label-sm rounded-xl shadow-sm transition-all cursor-pointer" onclick="simulateAlert(80)">测试 80% 提醒</button>
+<button class="px-space-md py-space-sm bg-surface-container-lowest hover:bg-surface-container-low text-on-surface text-label-sm rounded-xl shadow-sm transition-all cursor-pointer" onclick="simulateAlert(100)">测试 100% 超支</button>
+</div>
+</div>
+<!-- Grid of Categories -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-lg">
+<!-- Category 1: Food -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm hover:shadow-md transition-all">
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-primary-container/20 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-on-surface">餐饮美食</h3>
+<span class="text-body-sm text-outline">剩余 ¥650.00</span>
+</div>
+</div>
+<span class="text-label-sm bg-primary/10 text-primary px-space-sm py-space-xs rounded-full">74%</span>
+</div>
+<div class="flex justify-between items-end mb-space-sm">
+<span class="text-body-sm text-outline">已用 ¥2,350.00</span>
+<span class="text-body-md font-bold text-on-surface">总额 ¥3,000.00</span>
+</div>
+<div class="w-full bg-surface-container-low h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 74%"></div>
+</div>
+</div>
+<!-- Category 2: Shopping (Over Budget) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm hover:shadow-md transition-all relative overflow-hidden">
+<div class="absolute top-0 right-0 bg-error text-on-error text-[10px] font-bold px-space-md py-1 rounded-bl-xl">已超支</div>
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-error/10 text-error flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shopping_bag</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-on-surface">服饰购物</h3>
+<span class="text-body-sm text-error">超支 ¥280.00</span>
+</div>
+</div>
+<span class="text-label-sm bg-error/10 text-error px-space-sm py-space-xs rounded-full">114%</span>
+</div>
+<div class="flex justify-between items-end mb-space-sm">
+<span class="text-body-sm text-outline">已用 ¥2,280.00</span>
+<span class="text-body-md font-bold text-on-surface">总额 ¥2,000.00</span>
+</div>
+<div class="w-full bg-surface-container-low h-2 rounded-full overflow-hidden">
+<div class="bg-error h-full rounded-full" style="width: 100%"></div>
+</div>
+</div>
+<!-- Category 3: Transport -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm hover:shadow-md transition-all">
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-secondary-container text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">directions_car</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-on-surface">交通出行</h3>
+<span class="text-body-sm text-outline">剩余 ¥420.00</span>
+</div>
+</div>
+<span class="text-label-sm bg-secondary-container text-on-secondary-container px-space-sm py-space-xs rounded-full">58%</span>
+</div>
+<div class="flex justify-between items-end mb-space-sm">
+<span class="text-body-sm text-outline">已用 ¥580.00</span>
+<span class="text-body-md font-bold text-on-surface">总额 ¥1,000.00</span>
+</div>
+<div class="w-full bg-surface-container-low h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 58%"></div>
+</div>
+</div>
+<!-- Category 4: Entertainment (Warning 80%+) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm hover:shadow-md transition-all relative">
+<div class="absolute top-0 right-0 bg-warm-amber text-on-surface text-[10px] font-bold px-space-md py-1 rounded-bl-xl">预警 85%</div>
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-tertiary-container/20 text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">sports_esports</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-on-surface">娱乐休闲</h3>
+<span class="text-body-sm text-warm-amber">剩余 ¥150.00</span>
+</div>
+</div>
+<span class="text-label-sm bg-warm-amber/10 text-warm-amber px-space-sm py-space-xs rounded-full">85%</span>
+</div>
+<div class="flex justify-between items-end mb-space-sm">
+<span class="text-body-sm text-outline">已用 ¥850.00</span>
+<span class="text-body-md font-bold text-on-surface">总额 ¥1,000.00</span>
+</div>
+<div class="w-full bg-surface-container-low h-2 rounded-full overflow-hidden">
+<div class="bg-warm-amber h-full rounded-full" style="width: 85%"></div>
+</div>
+</div>
+<!-- Category 5: Housing -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm hover:shadow-md transition-all">
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-primary-container/20 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-on-surface">住房物业</h3>
+<span class="text-body-sm text-outline">剩余 ¥500.00</span>
+</div>
+</div>
+<span class="text-label-sm bg-primary/10 text-primary px-space-sm py-space-xs rounded-full">66%</span>
+</div>
+<div class="flex justify-between items-end mb-space-sm">
+<span class="text-body-sm text-outline">已用 ¥1,000.00</span>
+<span class="text-body-md font-bold text-on-surface">总额 ¥1,500.00</span>
+</div>
+<div class="w-full bg-surface-container-low h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 66%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Budget History & Overspend Logs Section -->
+<div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm">
+<div class="flex items-center justify-between mb-space-lg">
+<div>
+<h2 class="font-headline-md text-on-surface">预算历史与超支日志</h2>
+<p class="text-body-sm text-outline">记录每个月的预算调整历史与超支警告触发明细</p>
+</div>
+<div class="flex items-center gap-space-sm">
+<span class="text-body-sm text-outline">筛选月份：</span>
+<select class="bg-surface-container-low text-on-surface px-space-md py-space-xs rounded-lg text-label-md outline-none cursor-pointer">
+<option>2023年 10月</option>
+<option>2023年 09月</option>
+<option>2023年 08月</option>
+</select>
+</div>
+</div>
+<div class="space-y-space-md">
+<div class="flex items-center justify-between p-space-md bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-error/10 text-error flex items-center justify-center">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div>
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-sm text-on-surface">服饰购物分类超支提醒</span>
+<span class="text-[10px] bg-error/10 text-error font-bold px-2 py-0.5 rounded-full">100% 触发</span>
+</div>
+<p class="text-body-sm text-outline">10月18日 14:25 - 实际支出 ¥2,280.00，超出预设额度 ¥280.00</p>
+</div>
+</div>
+<span class="text-body-sm text-outline">已自动发送短信通知</span>
+</div>
+<div class="flex items-center justify-between p-space-md bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-warm-amber/10 text-warm-amber flex items-center justify-center">
+<span class="material-symbols-outlined">notifications_active</span>
+</div>
+<div>
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-sm text-on-surface">娱乐休闲分类 85% 预警</span>
+<span class="text-[10px] bg-warm-amber/10 text-warm-amber font-bold px-2 py-0.5 rounded-full">85% 触发</span>
+</div>
+<p class="text-body-sm text-outline">10月15日 09:12 - 接近预设上限 ¥1,000.00，剩余可用 ¥150.00</p>
+</div>
+</div>
+<span class="text-body-sm text-outline">App 推送已送达</span>
+</div>
+<div class="flex items-center justify-between p-space-md bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined">edit</span>
+</div>
+<div>
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-sm text-on-surface">总预算额度调整</span>
+<span class="text-[10px] bg-primary/10 text-primary font-bold px-2 py-0.5 rounded-full">系统变更</span>
+</div>
+<p class="text-body-sm text-outline">10月01日 00:00 - 新增月度总预算由 ¥8,000.00 提升至 ¥8,500.00</p>
+</div>
+</div>
+<span class="text-body-sm text-outline">操作人：DemoUser</span>
+</div>
+</div>
+</div>
+<!-- Budget Settings Modal (Hidden by Default) -->
+<div class="fixed inset-0 bg-on-surface/40 backdrop-blur-sm z-50 flex items-center justify-center hidden" id="budget-modal">
+<div class="bg-surface-container-lowest rounded-xl w-full max-w-lg p-space-xl shadow-2xl relative">
+<div class="flex items-center justify-between mb-space-lg">
+<h3 class="font-headline-md text-on-surface">设置新预算</h3>
+<button class="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center text-outline hover:text-on-surface cursor-pointer" onclick="closeBudgetModal()">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="space-y-space-md">
+<div>
+<label class="block text-label-md text-on-surface mb-space-xs">本月总预算金额 (¥)</label>
+<input class="w-full bg-surface-container-low px-space-md py-space-md rounded-xl text-on-surface outline-none focus:ring-2 focus:ring-primary" type="number" value="8500"/>
+</div>
+<div>
+<label class="block text-label-md text-on-surface mb-space-xs">超警阈值设置 (%)</label>
+<div class="grid grid-cols-2 gap-space-md">
+<div class="flex items-center gap-space-sm bg-surface-container-low p-space-sm rounded-xl">
+<span class="text-body-sm text-outline">一级预警</span>
+<input class="w-16 bg-surface px-2 py-1 rounded text-center text-on-surface outline-none" type="number" value="80"/>
+<span class="text-body-sm text-outline">%</span>
+</div>
+<div class="flex items-center gap-space-sm bg-surface-container-low p-space-sm rounded-xl">
+<span class="text-body-sm text-outline">超支拦截</span>
+<input class="w-16 bg-surface px-2 py-1 rounded text-center text-on-surface outline-none" type="number" value="100"/>
+<span class="text-body-sm text-outline">%</span>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-label-md text-on-surface mb-space-xs">分类预算快捷分配</label>
+<div class="space-y-space-sm max-h-48 overflow-y-auto pr-space-xs">
+<div class="flex items-center justify-between bg-surface-container-low p-space-sm rounded-xl">
+<span class="text-body-md text-on-surface">餐饮美食</span>
+<input class="w-28 bg-surface px-3 py-1 rounded text-right text-on-surface outline-none" type="number" value="3000"/>
+</div>
+<div class="flex items-center justify-between bg-surface-container-low p-space-sm rounded-xl">
+<span class="text-body-md text-on-surface">服饰购物</span>
+<input class="w-28 bg-surface px-3 py-1 rounded text-right text-on-surface outline-none" type="number" value="2000"/>
+</div>
+<div class="flex items-center justify-between bg-surface-container-low p-space-sm rounded-xl">
+<span class="text-body-md text-on-surface">交通出行</span>
+<input class="w-28 bg-surface px-3 py-1 rounded text-right text-on-surface outline-none" type="number" value="1000"/>
+</div>
+<div class="flex items-center justify-between bg-surface-container-low p-space-sm rounded-xl">
+<span class="text-body-md text-on-surface">娱乐休闲</span>
+<input class="w-28 bg-surface px-3 py-1 rounded text-right text-on-surface outline-none" type="number" value="1000"/>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-end gap-space-md mt-space-xl">
+<button class="px-space-lg py-space-sm bg-surface-container-low hover:bg-surface-container-high text-on-surface text-label-md rounded-xl transition-all cursor-pointer" onclick="closeBudgetModal()">取消</button>
+<button class="px-space-lg py-space-sm bg-primary hover:bg-primary/90 text-on-primary text-label-md rounded-xl transition-all shadow-sm cursor-pointer" onclick="saveBudget()">保存并应用</button>
+</div>
+</div>
+</div>
+<!-- Script for interactivity and toast simulation -->
+<script>
+    function openBudgetModal() {
+      document.getElementById('budget-modal').classList.remove('hidden');
+    }
+    function closeBudgetModal() {
+      document.getElementById('budget-modal').classList.add('hidden');
+    }
+    function saveBudget() {
+      closeBudgetModal();
+      triggerToast('success', '预算设置已成功更新！');
+    }
+    function simulateAlert(type) {
+      if(type === 80) {
+        triggerToast('warning', '【预算预警】「娱乐休闲」分类已消耗达 85%，请注意合理控制开支！');
+      } else {
+        triggerToast('error', '【超支警示】「服饰购物」分类已达 100% 预算上限并产生超支！');
+      }
+    }
+    function triggerToast(status, message) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      let bgClass = 'bg-primary text-on-primary';
+      let icon = 'check_circle';
+      if(status === 'warning') {
+        bgClass = 'bg-warm-amber text-on-surface';
+        icon = 'warning';
+      } else if(status === 'error') {
+        bgClass = 'bg-error text-on-error';
+        icon = 'error';
+      }
+
+      toast.className = `flex items-center gap-space-sm px-space-lg py-space-md rounded-xl shadow-lg pointer-events-auto transition-all transform translate-y-2 opacity-0 ${bgClass}`;
+      toast.innerHTML = \`<span class="material-symbols-outlined text-[20px]">\${icon}</span><span class="text-label-md font-medium">\${message}</span>\`;
+      
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-2', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+  </script>
+</div></main></div><div class="fixed bottom-space-xl right-space-xl z-50 flex flex-col gap-space-sm pointer-events-none" id="toast-container"></div></body></html>

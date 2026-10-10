@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>口袋账本 · 统计</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="assets/css/tailwind.config.js"></script>
+  <link href="assets/css/base.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+</head>
+<body class="bg-surface font-body-md text-on-surface" data-page="statistics">
+  <div id="app-sidebar"></div>
+  <div class="pl-64">
+    <div id="app-header"></div>
+    <main id="app-main" class="relative pt-16 bg-surface min-h-screen p-space-xl">
+      <div class="flex flex-col w-full pb-space-xl">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md mb-space-xl">
+          <div>
+            <h1 class="text-headline-lg font-bold text-on-surface tracking-tight">收支统计报表</h1>
+            <p class="text-body-md text-on-surface-variant mt-space-xs">通过直观的数据透视，掌握您的每一笔资金流向与财务健康度。</p>
+          </div>
+          <div class="flex items-center bg-surface-container-low p-1 rounded-xl self-start">
+            <button class="px-space-md py-space-xs rounded-lg text-label-md font-medium text-on-surface-variant transition-all" id="tab-day" data-period="day" type="button">日</button>
+            <button class="px-space-md py-space-xs rounded-lg text-label-md font-medium text-on-surface-variant transition-all" id="tab-week" data-period="week" type="button">周</button>
+            <button class="px-space-md py-space-xs rounded-lg text-label-md font-medium bg-primary text-on-primary shadow-sm transition-all" id="tab-month" data-period="month" type="button">月</button>
+            <button class="px-space-md py-space-xs rounded-lg text-label-md font-medium text-on-surface-variant transition-all" id="tab-year" data-period="year" type="button">年</button>
+          </div>
+        </div>
+
+        <!-- 顶部三卡 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-space-lg mb-space-xl">
+          <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-primary/5 rounded-full blur-xl group-hover:bg-primary/10 transition-all"></div>
+            <div class="flex items-center justify-between mb-space-sm">
+              <span class="text-label-md text-on-surface-variant font-medium">期间总收入</span>
+              <div class="w-10 h-10 rounded-xl bg-primary-fixed/50 flex items-center justify-center text-on-primary-fixed">
+                <span class="material-symbols-outlined">trending_up</span>
+              </div>
+            </div>
+            <div class="text-headline-lg font-bold text-on-surface tracking-tight" id="total-income">¥0.00</div>
+            <div class="flex items-center gap-space-xs mt-space-sm text-body-sm text-primary font-medium">
+              <span>本期收入汇总</span>
+            </div>
+          </div>
+          <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-tertiary/5 rounded-full blur-xl group-hover:bg-tertiary/10 transition-all"></div>
+            <div class="flex items-center justify-between mb-space-sm">
+              <span class="text-label-md text-on-surface-variant font-medium">期间总支出</span>
+              <div class="w-10 h-10 rounded-xl bg-tertiary-fixed/50 flex items-center justify-center text-on-tertiary-fixed">
+                <span class="material-symbols-outlined">trending_down</span>
+              </div>
+            </div>
+            <div class="text-headline-lg font-bold text-on-surface tracking-tight" id="total-expense">¥0.00</div>
+            <div class="flex items-center gap-space-xs mt-space-sm text-body-sm text-soft-rose font-medium">
+              <span>本期支出汇总</span>
+            </div>
+          </div>
+          <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
+            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-primary-container/20 rounded-full blur-xl group-hover:bg-primary-container/30 transition-all"></div>
+            <div class="flex items-center justify-between mb-space-sm">
+              <span class="text-label-md text-on-surface-variant font-medium">净结余</span>
+              <div class="w-10 h-10 rounded-xl bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed">
+                <span class="material-symbols-outlined">account_balance</span>
+              </div>
+            </div>
+            <div class="text-headline-lg font-bold text-primary tracking-tight" id="total-balance">¥0.00</div>
+            <div class="flex items-center gap-space-xs mt-space-sm text-body-sm text-on-surface-variant">
+              <span>结余率 <strong class="text-on-surface font-semibold" id="balance-rate">--</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 中部：趋势图 + 环形图 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-space-lg mb-space-xl">
+          <div class="lg:col-span-2 bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-space-md">
+              <div>
+                <h2 class="text-headline-sm font-bold text-on-surface">每日收支趋势</h2>
+                <p class="text-body-sm text-on-surface-variant">点击柱状图可筛选对应日期的明细数据</p>
+              </div>
+              <div class="flex items-center gap-space-md text-label-sm">
+                <div class="flex items-center gap-space-xs"><div class="w-3 h-3 rounded-full bg-primary"></div><span class="text-on-surface-variant">收入</span></div>
+                <div class="flex items-center gap-space-xs"><div class="w-3 h-3 rounded-full bg-tertiary"></div><span class="text-on-surface-variant">支出</span></div>
+              </div>
+            </div>
+            <div class="h-64 w-full flex items-end justify-between gap-2 pt-space-xl pb-space-sm px-space-xs relative" id="trend-bars"></div>
+          </div>
+
+          <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col justify-between">
+            <div>
+              <h2 class="text-headline-sm font-bold text-on-surface mb-space-xs">支出分类占比</h2>
+              <p class="text-body-sm text-on-surface-variant mb-space-md">点击分类可查看详细消费结构</p>
+            </div>
+            <div class="relative w-44 h-44 mx-auto my-space-md flex items-center justify-center">
+              <svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100" id="donut"></svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+                <span class="text-body-sm text-on-surface-variant">总支出</span>
+                <span class="text-headline-sm font-bold text-on-surface" id="donut-total">¥0</span>
+              </div>
+            </div>
+            <div class="grid grid-cols-3 gap-2 pt-space-sm" id="donut-legend"></div>
+          </div>
+        </div>
+
+        <!-- 分类 Top 排行 -->
+        <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm mb-space-xl">
+          <div class="flex items-center justify-between mb-space-lg">
+            <div>
+              <h2 class="text-headline-sm font-bold text-on-surface">分类 Top 排行榜</h2>
+              <p class="text-body-sm text-on-surface-variant">本期消费主力分类与具体金额对比</p>
+            </div>
+            <div class="hidden items-center gap-space-xs bg-primary-fixed/55 px-space-md py-space-xs rounded-full text-label-sm text-on-primary-fixed" id="active-filter-badge">
+              <span>当前筛选：<strong id="filter-name">--</strong></span>
+              <span class="material-symbols-outlined text-[16px] cursor-pointer" id="clear-filter">close</span>
+            </div>
+          </div>
+          <div class="space-y-space-md" id="top-categories"></div>
+        </div>
+
+        <!-- 联动明细列表 -->
+        <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm transition-all" id="transaction-detail-section">
+          <div class="flex items-center justify-between mb-space-md">
+            <div>
+              <h2 class="text-headline-sm font-bold text-on-surface" id="detail-title">联动明细列表</h2>
+              <p class="text-body-sm text-on-surface-variant" id="detail-subtitle">展示当前选中分类或日期的账目详情</p>
+            </div>
+            <span class="text-label-md text-primary font-medium" id="detail-count">--</span>
+          </div>
+          <div class="space-y-space-sm" id="detail-list">
+            <p class="text-body-sm text-on-surface-variant text-center py-space-md" id="detail-empty">点击上方分类或日期柱，联动筛选明细数据</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+<script type="module">
+  import { guardAuth } from './assets/js/guard.js';
+  import { mountShell } from './assets/js/shell.js';
+  import { showToast } from './assets/js/toast.js';
+  import { getOverview, getExpenseByCategory, getDailyTrend, filterRecordsByCategory, rangeOf } from './assets/js/stats.js';
+  import { getRecordsByOwner, getCurrentOwnerId } from './assets/js/storage.js';
+
+  guardAuth();
+  mountShell('statistics');
+
+  let currentPeriod = 'month';
+  const COLOR_PALETTE = ['text-primary', 'text-tertiary', 'text-secondary', 'text-warm-amber', 'text-soft-rose'];
+  const BG_PALETTE = ['bg-primary/10 text-primary group-hover:bg-primary group-hover:text-on-primary',
+                      'bg-tertiary/10 text-tertiary group-hover:bg-tertiary group-hover:text-on-tertiary',
+                      'bg-secondary/10 text-secondary group-hover:bg-secondary group-hover:text-on-secondary',
+                      'bg-warm-amber/10 text-warm-amber group-hover:bg-warm-amber group-hover:text-on-surface',
+                      'bg-soft-rose/10 text-soft-rose group-hover:bg-soft-rose group-hover:text-on-error'];
+
+  function setActiveTab(period) {
+    currentPeriod = period;
+    ['day', 'week', 'month', 'year'].forEach(t => {
+      const btn = document.getElementById(`tab-${t}`);
+      btn.className = (t === period)
+        ? 'px-space-md py-space-xs rounded-lg text-label-md font-medium bg-primary text-on-primary shadow-sm transition-all'
+        : 'px-space-md py-space-xs rounded-lg text-label-md font-medium text-on-surface-variant transition-all';
+    });
+    renderAll();
+    showToast('已切换至' + ({ day: '日', week: '周', month: '月', year: '年' }[period]) + '视图');
+  }
+
+  ['day', 'week', 'month', 'year'].forEach(t => {
+    document.getElementById(`tab-${t}`).addEventListener('click', () => setActiveTab(t));
+  });
+
+  function renderAll() {
+    renderOverview();
+    renderTrend();
+    renderDonut();
+    renderTopCategories();
+    renderDetailList(null);
+  }
+
+  function renderOverview() {
+    const o = getOverview(currentPeriod);
+    document.getElementById('total-income').innerText = `¥${o.income.toFixed(2)}`;
+    document.getElementById('total-expense').innerText = `¥${o.expense.toFixed(2)}`;
+    document.getElementById('total-balance').innerText = `¥${o.balance.toFixed(2)}`;
+    const rate = (o.income + o.expense) > 0 ? ((o.balance / (o.income + o.expense)) * 100).toFixed(1) + '%' : '--';
+    document.getElementById('balance-rate').innerText = rate;
+  }
+
+  function renderTrend() {
+    const trend = getDailyTrend(currentPeriod);
+    const max = Math.max(1, ...trend.flatMap(b => [b.income, b.expense]));
+    const container = document.getElementById('trend-bars');
+    container.innerHTML = `
+      <div class="absolute inset-x-0 top-0 bottom-8 flex flex-col justify-between pointer-events-none opacity-20">
+        <div class="w-full border-b border-outline"></div>
+        <div class="w-full border-b border-outline"></div>
+        <div class="w-full border-b border-outline"></div>
+        <div class="w-full border-b border-outline"></div>
+      </div>
+    ` + trend.map(b => {
+      const ih = (b.income / max) * 100;
+      const eh = (b.expense / max) * 100;
+      return `<div class="flex-1 flex flex-col items-center gap-space-xs group cursor-pointer z-10 h-full justify-end" data-date="${b.dateLabel}">
+        <div class="w-full max-w-[24px] flex items-end justify-center gap-1 h-full">
+          <div class="w-2.5 bg-primary rounded-t-sm group-hover:brightness-110 transition-all" style="height:${ih}%"></div>
+          <div class="w-2.5 bg-tertiary rounded-t-sm group-hover:brightness-110 transition-all" style="height:${eh}%"></div>
+        </div>
+        <span class="text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">${b.dateLabel}</span>
+      </div>`;
+    }).join('');
+    container.querySelectorAll('[data-date]').forEach(el => {
+      el.addEventListener('click', () => {
+        const d = el.dataset.date;
+        showActiveBadge(`日期 ${d}`);
+        renderDetailList({ type: 'date', value: d });
+        showToast(`已联动筛选日期：${d}`);
+      });
+    });
+  }
+
+  function renderDonut() {
+    const { total, rows } = getExpenseByCategory(currentPeriod);
+    document.getElementById('donut-total').innerText = `¥${total.toFixed(0)}`;
+    const top = rows.slice(0, 3);
+    const circumference = 251.2; // 2πr (r=40)
+    let offsetAcc = circumference;
+    const svg = document.getElementById('donut');
+    svg.innerHTML = `<circle class="text-surface-container-high" cx="50" cy="50" fill="transparent" r="40" stroke="currentColor" stroke-width="12"></circle>`;
+    top.forEach((r, i) => {
+      const len = (r.percent / 100) * circumference;
+      offsetAcc -= len;
+      svg.insertAdjacentHTML('beforeend',
+        `<circle class="${COLOR_PALETTE[i]} cursor-pointer hover:opacity-85 transition-opacity" cx="50" cy="50" fill="transparent" data-cat="${r.name}" r="40" stroke="currentColor" stroke-dasharray="${circumference}" stroke-dashoffset="${offsetAcc}" stroke-width="12"></circle>`
+      );
+    });
+    const legend = document.getElementById('donut-legend');
+    legend.innerHTML = top.map((r, i) => {
+      const dotCls = `w-2 h-2 rounded-full ${['bg-primary', 'bg-tertiary', 'bg-secondary'][i]}`;
+      return `<div class="text-center p-2 rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container-high transition-colors" data-cat="${r.name}">
+        <div class="flex items-center justify-center gap-1 mb-1"><div class="${dotCls}"></div><span class="text-label-sm text-on-surface-variant font-medium">${r.name}</span></div>
+        <span class="text-body-sm font-bold text-on-surface">${r.percent.toFixed(0)}%</span>
+      </div>`;
+    }).join('');
+    svg.querySelectorAll('[data-cat]').forEach(c => c.addEventListener('click', () => filterByCategory(c.dataset.cat)));
+    legend.querySelectorAll('[data-cat]').forEach(c => c.addEventListener('click', () => filterByCategory(c.dataset.cat)));
+  }
+
+  function renderTopCategories() {
+    const { rows } = getExpenseByCategory(currentPeriod);
+    const top = rows.slice(0, 5);
+    const container = document.getElementById('top-categories');
+    if (top.length === 0) {
+      container.innerHTML = '<p class="text-body-sm text-on-surface-variant text-center py-space-md">本期暂无支出数据</p>';
+      return;
+    }
+    container.innerHTML = top.map((r, i) => `
+      <div class="group cursor-pointer p-space-sm rounded-xl hover:bg-surface-container-low transition-all" data-cat="${r.name}">
+        <div class="flex items-center justify-between mb-space-xs">
+          <div class="flex items-center gap-space-md">
+            <div class="w-10 h-10 rounded-xl ${BG_PALETTE[i] || BG_PALETTE[4]} flex items-center justify-center transition-all">
+              <span class="material-symbols-outlined">${r.icon}</span>
+            </div>
+            <div>
+              <span class="text-label-md font-bold text-on-surface block">${r.name}</span>
+              <span class="text-body-sm text-on-surface-variant">占比 ${r.percent.toFixed(1)}%</span>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-headline-sm font-bold text-on-surface block">¥${r.amount.toFixed(2)}</span>
+          </div>
+        </div>
+        <div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden">
+          <div class="${['bg-primary', 'bg-tertiary', 'bg-secondary', 'bg-warm-amber', 'bg-soft-rose'][i]} h-full rounded-full group-hover:brightness-110 transition-all" style="width:${r.percent}%"></div>
+        </div>
+      </div>
+    `).join('');
+    container.querySelectorAll('[data-cat]').forEach(c => c.addEventListener('click', () => filterByCategory(c.dataset.cat)));
+  }
+
+  function filterByCategory(name) {
+    showActiveBadge(name);
+    renderDetailList({ type: 'category', value: name });
+    const sec = document.getElementById('transaction-detail-section');
+    sec.classList.add('ring-2', 'ring-primary', 'ring-offset-2');
+    setTimeout(() => sec.classList.remove('ring-2', 'ring-primary', 'ring-offset-2'), 600);
+    showToast(`已联动筛选：${name}`);
+  }
+
+  function showActiveBadge(name) {
+    document.getElementById('filter-name').innerText = name;
+    document.getElementById('active-filter-badge').classList.remove('hidden');
+    document.getElementById('active-filter-badge').classList.add('flex');
+  }
+
+  function renderDetailList(filter) {
+    const titleEl = document.getElementById('detail-title');
+    const subtitleEl = document.getElementById('detail-subtitle');
+    const listEl = document.getElementById('detail-list');
+    const countEl = document.getElementById('detail-count');
+    const empty = document.getElementById('detail-empty');
+
+    if (!filter) {
+      titleEl.innerText = '联动明细列表';
+      subtitleEl.innerText = '展示当前选中分类或日期的账目详情';
+      countEl.innerText = '--';
+      empty.classList.remove('hidden');
+      listEl.querySelectorAll(':scope > div').forEach(n => n.remove());
+      return;
+    }
+
+    let records = [];
+    if (filter.type === 'category') {
+      records = filterRecordsByCategory(filter.value, currentPeriod);
+      titleEl.innerText = `${filter.value} 分类明细`;
+      subtitleEl.innerText = `当前正在查看「${filter.value}」分类下的所有消费记录`;
+    } else if (filter.type === 'date') {
+      const all = filterRecordsByCategory('__all__', currentPeriod); // 占位（filterRecordsByCategory 会按名字过滤，这里我们直接取所有）
+      // 上面会失败；改用通用实现：取当前周期内全部记录再按日期过滤
+      records = getCurrentPeriodAllRecords().filter(r => r.occurredAt.slice(5, 10) === filter.value);
+      titleEl.innerText = `${filter.value} 收支明细`;
+      subtitleEl.innerText = `当前正在查看 ${filter.value} 当天的全部收支流水`;
+    }
+    countEl.innerText = `共 ${records.length} 条`;
+    if (records.length === 0) {
+      empty.classList.remove('hidden');
+      empty.innerText = '该筛选条件下暂无数据';
+      listEl.querySelectorAll(':scope > div').forEach(n => n.remove());
+      return;
+    }
+    empty.classList.add('hidden');
+    listEl.querySelectorAll(':scope > div').forEach(n => n.remove());
+    listEl.insertAdjacentHTML('beforeend', records.map(r => `
+      <div class="flex items-center justify-between p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-all">
+        <div class="flex items-center gap-space-md">
+          <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined">label</span>
+          </div>
+          <div>
+            <span class="text-label-md font-bold text-on-surface block">${r.note || '未命名'}</span>
+            <span class="text-body-sm text-on-surface-variant">${new Date(r.occurredAt).toLocaleString('zh-CN', { hour12: false })}</span>
+          </div>
+        </div>
+        <div class="text-right">
+          <span class="text-label-md font-bold ${r.type === 'expense' ? 'text-soft-rose' : 'text-primary'} block">${r.type === 'expense' ? '-' : '+'} ¥${r.amount.toFixed(2)}</span>
+        </div>
+      </div>
+    `).join(''));
+  }
+
+  function getCurrentPeriodAllRecords() {
+    const ownerId = getCurrentOwnerId();
+    const { from, to } = rangeOf(currentPeriod);
+    return getRecordsByOwner(ownerId).filter(r => {
+      const t = new Date(r.occurredAt).getTime();
+      return t >= from.getTime() && t <= to.getTime();
+    }).sort((a, b) => new Date(b.occurredAt) - new Date(a.occurredAt));
+  }
+
+  document.getElementById('clear-filter').addEventListener('click', () => {
+    document.getElementById('active-filter-badge').classList.add('hidden');
+    document.getElementById('active-filter-badge').classList.remove('flex');
+    renderDetailList(null);
+    showToast('已重置筛选条件');
+  });
+
+  renderAll();
+</script>
+</body>
+</html>

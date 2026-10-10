@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta content="width=1280, initial-scale=1.0" name="viewport"/>
+  <title>口袋账本 · 登录与注册 · UI 原型预览</title>
+  <link href="assets/icon-logo.svg" rel="icon" type="image/svg+xml"/>
+  <style>
+    /* ==== 设计还原：与 Figma 源文件保持像素级一致 ==== */
+    :root {
+      --primary: #006a63;
+      --primary-fixed-dim-rgb: 117, 215, 204;
+      --primary-rgb: 0, 106, 99;
+      --on-primary: #ffffff;
+      --surface: #f7f9ff;
+      --surface-container-lowest: #ffffff;
+      --surface-container-low: #edf4ff;
+      --surface-container: #e3efff;
+      --on-surface: #091d2e;
+      --on-surface-variant: #3e4947;
+      --outline: #6e7977;
+      --outline-variant: #bdc9c6;
+      --font-family: "WenQuanYi Zen Hei", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      font-family: var(--font-family);
+      color: var(--on-surface);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ==== 主背景（与 Figma 一致：浅蓝渐变 + 模糊光斑） ==== */
+    .page {
+      width: 1280px;
+      min-height: 1002px;
+      background: linear-gradient(90deg, #f7f9ff 0%, #f7f9ff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 223.5px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ==== 卡片主体 ==== */
+    .card {
+      width: 100%;
+      max-width: 448px;
+      background: var(--surface-container-lowest);
+      border-radius: 12px;
+      box-shadow:
+        0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    /* ==== 装饰模糊光斑 ==== */
+    .accent-tr {
+      position: absolute;
+      top: -96px;
+      right: -96px;
+      width: 192px;
+      height: 192px;
+      border-radius: 9999px;
+      background: rgba(0, 106, 99, 0.1);
+      filter: blur(20px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .accent-bl {
+      position: absolute;
+      bottom: -96px;
+      left: -96px;
+      width: 192px;
+      height: 192px;
+      border-radius: 9999px;
+      background: rgba(117, 215, 204, 0.2);
+      filter: blur(20px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ==== Header / Logo Area ==== */
+    .header {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 32px 32px 16px 32px;
+      width: 100%;
+    }
+    .logo {
+      position: relative;
+      width: 48px;
+      height: 34px;
+      background: var(--primary);
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    }
+    .logo img { width: 19px; height: 18px; display: block; }
+
+    .title-wrap { padding-top: 8px; display: flex; flex-direction: column; align-items: center; width: 100%; }
+    .title {
+      font-size: 32px;
+      line-height: 40px;
+      letter-spacing: -0.8px;
+      color: var(--on-surface);
+      font-weight: 500;
+      text-align: center;
+    }
+    .subtitle-wrap { display: flex; flex-direction: column; align-items: center; width: 100%; }
+    .subtitle {
+      font-size: 12px;
+      line-height: 16px;
+      color: var(--outline);
+      font-weight: 500;
+      text-align: center;
+    }
+
+    /* ==== Tab Switcher ==== */
+    .tabs {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      padding: 0 32px;
+      width: 100%;
+    }
+    .tabs-inner {
+      display: flex;
+      flex: 1 0 0;
+      align-items: stretch;
+      background: var(--surface-container);
+      border-radius: 8px;
+      padding: 4px;
+      gap: 0;
+    }
+    .tab {
+      flex: 1 0 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 0;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--outline);
+    }
+    .tab.active {
+      background: var(--surface-container-lowest);
+      color: var(--primary);
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    }
+
+    /* ==== Forms Container ==== */
+    .forms {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 24px 32px;
+      width: 384px;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+    .field { display: flex; flex-direction: column; gap: 4px; width: 100%; }
+    .label {
+      font-size: 12px;
+      line-height: 16px;
+      color: var(--on-surface-variant);
+      font-weight: 500;
+    }
+    .input-wrap {
+      position: relative;
+      width: 100%;
+    }
+    .input-icon {
+      position: absolute;
+      left: 12px;
+      top: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      pointer-events: none;
+      color: var(--outline);
+    }
+    .input-icon img { width: 12px; height: 12px; display: block; }
+    .input-icon.password img { width: 12px; height: 15.75px; }
+    .input {
+      width: 100%;
+      height: 40px;
+      background: var(--surface-container-low);
+      border: none;
+      border-radius: 8px;
+      padding: 11px 16px 11px 40px;
+      font-size: 14px;
+      line-height: normal;
+      color: var(--on-surface);
+      font-family: inherit;
+      font-weight: 500;
+      outline: none;
+    }
+    .input::placeholder { color: var(--outline-variant); font-weight: 500; }
+    .input:focus { box-shadow: 0 0 0 2px rgba(0, 106, 99, 0.5); }
+
+    .toggle-eye {
+      position: absolute;
+      right: 0;
+      top: 8.38px;
+      bottom: 8.38px;
+      display: flex;
+      align-items: center;
+      padding: 6px 12px 6px 0;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--outline);
+    }
+    .toggle-eye img { width: 16.5px; height: 11.25px; display: block; }
+
+    /* ==== 记住我 + 忘记密码 ==== */
+    .row-between {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .checkbox {
+      width: 13px;
+      height: 13px;
+      border: 1px solid #767676;
+      border-radius: 2.5px;
+      background: #fff;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .remember-text {
+      font-size: 12px;
+      line-height: 16px;
+      color: var(--outline);
+      font-weight: 500;
+    }
+    .forgot {
+      font-size: 12px;
+      line-height: 16px;
+      color: var(--primary);
+      font-weight: 500;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    /* ==== 安全登录按钮 ==== */
+    .submit {
+      position: relative;
+      width: 100%;
+      height: 44px;
+      background: var(--primary);
+      color: var(--on-primary);
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -2px rgba(0, 0, 0, 0.1);
+      font-family: inherit;
+    }
+    .submit img { width: 12px; height: 12px; display: block; }
+
+    /* ==== Footer ==== */
+    .footer {
+      position: relative;
+      z-index: 1;
+      background: rgba(244, 250, 249, 0.5);
+      border-top: 1px solid rgba(189, 201, 198, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 17px 32px 16px 32px;
+      width: 100%;
+    }
+    .footer img { width: 10.667px; height: 13.333px; display: block; }
+    .footer-text {
+      font-size: 16px;
+      line-height: 24px;
+      color: var(--outline);
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <!-- ============================ 登录与注册 - 口袋账本 ============================ -->
+  <main class="page" data-name="登录与注册 - 口袋账本">
+    <section class="card" data-name="Background+Shadow">
+      <div class="accent-tr" data-name="Decorative background accent"></div>
+      <div class="accent-bl" data-name="Overlay+Blur"></div>
+
+      <!-- ====== Header ====== -->
+      <div class="header" data-name="Header / Logo Area">
+        <div class="logo" data-name="Background">
+          <div data-name="Overlay+Shadow"></div>
+          <div data-name="Container">
+            <img alt="logo" src="assets/icon-logo.svg"/>
+          </div>
+        </div>
+        <div class="title-wrap" data-name="Heading 1">
+          <h1 class="title" data-name="Text">口袋账本</h1>
+        </div>
+        <div class="subtitle-wrap" data-name="Container">
+          <p class="subtitle" data-name="Text">本地轻量级个人资产与记账系统 V1.0.1</p>
+        </div>
+      </div>
+
+      <!-- ====== Tab Switcher ====== -->
+      <div class="tabs" data-name="Tab Switcher">
+        <div class="tabs-inner" data-name="Background">
+          <button class="tab active" data-name="Button" type="button">登录</button>
+          <button class="tab" data-name="Button" type="button">注册新账号</button>
+        </div>
+      </div>
+
+      <!-- ====== Forms ====== -->
+      <form class="forms" data-name="Forms Container → Form - LOGIN FORM">
+        <!-- 用户名 -->
+        <div class="field" data-name="Container">
+          <div class="label" data-name="Label">用户名</div>
+          <div class="input-wrap" data-name="Container">
+            <span class="input-icon" data-name="Container">
+              <img alt="user" src="assets/icon-user.svg"/>
+            </span>
+            <input class="input" placeholder="请输入用户名" type="text"/>
+          </div>
+        </div>
+
+        <!-- 密码 -->
+        <div class="field" data-name="Container">
+          <div class="label" data-name="Label">密码</div>
+          <div class="input-wrap" data-name="Container">
+            <span class="input-icon password" data-name="Container">
+              <img alt="password" src="assets/icon-password.svg"/>
+            </span>
+            <input class="input" placeholder="请输入密码" type="password"/>
+            <button class="toggle-eye" data-name="Button" type="button">
+              <img alt="toggle visibility" src="assets/icon-eye.svg"/>
+            </button>
+          </div>
+        </div>
+
+        <!-- 记住我 + 忘记密码 -->
+        <div class="row-between" data-name="Container">
+          <button class="remember" data-name="Label" type="button">
+            <span class="checkbox" data-name="Input"></span>
+            <span class="remember-text">记住我</span>
+          </button>
+          <button class="forgot" data-name="Button" type="button">忘记密码？</button>
+        </div>
+
+        <!-- 安全登录 -->
+        <button class="submit" data-name="Button" type="submit">
+          <span data-name="Container">安全登录</span>
+          <img alt="login" src="assets/icon-arrow.svg"/>
+        </button>
+      </form>
+
+      <!-- ====== Footer ====== -->
+      <div class="footer" data-name="Footer Security Badge">
+        <img alt="shield" src="assets/icon-lock.svg"/>
+        <span class="footer-text">PBKDF2 本地高强度加密保护 · 数据仅存浏览器</span>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

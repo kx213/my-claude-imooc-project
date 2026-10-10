@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>口袋账本 · 首页</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="assets/css/tailwind.config.js"></script>
+  <link href="assets/css/base.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+</head>
+<body class="bg-surface font-body-md text-on-surface" data-page="home">
+  <div id="app-sidebar"></div>
+  <div class="pl-64">
+    <div id="app-header"></div>
+    <main id="app-main" class="relative pt-16 bg-surface min-h-screen p-space-xl">
+      <div class="flex flex-col w-full pb-24">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+          <!-- 左侧：财务总览 + 今日明细 -->
+          <div class="lg:col-span-7 flex flex-col gap-space-lg">
+            <!-- 月度财务总览卡 -->
+            <div class="bg-surface-container-low rounded-xl p-space-lg shadow-sm relative overflow-hidden flex flex-col justify-between">
+              <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-primary/10 rounded-full blur-2xl pointer-events-none"></div>
+              <div class="flex items-center justify-between mb-space-md">
+                <div class="flex items-center gap-space-sm">
+                  <span class="material-symbols-outlined text-primary text-[24px]">savings</span>
+                  <h2 class="text-headline-sm text-on-surface">本月财务总览</h2>
+                </div>
+                <span class="text-label-sm text-on-surface-variant bg-surface-container-high px-space-sm py-space-xs rounded-full" id="month-label">--</span>
+              </div>
+              <div class="grid grid-cols-3 gap-space-md">
+                <div class="bg-surface-container-lowest p-space-md rounded-xl flex flex-col gap-space-xs">
+                  <span class="text-label-sm text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-soft-rose">arrow_upward</span>本月支出</span>
+                  <span class="text-headline-md text-on-surface font-bold" id="month-expense">¥0.00</span>
+                  <span class="text-body-sm text-on-surface-variant" id="month-expense-hint">--</span>
+                </div>
+                <div class="bg-surface-container-lowest p-space-md rounded-xl flex flex-col gap-space-xs">
+                  <span class="text-label-sm text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-primary">arrow_downward</span>本月收入</span>
+                  <span class="text-headline-md text-on-surface font-bold" id="month-income">¥0.00</span>
+                  <span class="text-body-sm text-on-surface-variant" id="month-income-hint">--</span>
+                </div>
+                <div class="bg-surface-container-lowest p-space-md rounded-xl flex flex-col gap-space-xs">
+                  <span class="text-label-sm text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-warm-amber">account_balance</span>本月结余</span>
+                  <span class="text-headline-md text-primary font-bold" id="month-balance">¥0.00</span>
+                  <span class="text-body-sm text-on-surface-variant">健康状态</span>
+                </div>
+              </div>
+              <div class="mt-space-md pt-space-md flex items-center justify-between text-body-sm text-on-surface-variant border-t border-surface-container-high/40">
+                <div class="flex items-center gap-space-sm">
+                  <span>今日已消费</span>
+                  <strong class="text-on-surface" id="today-spent">¥0.00</strong>
+                </div>
+                <div class="flex items-center gap-space-sm">
+                  <span>今日记账</span>
+                  <strong class="text-primary" id="today-count">0 笔</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- 今日明细 -->
+            <div class="bg-surface-container-low rounded-xl p-space-lg shadow-sm flex flex-col">
+              <div class="flex items-center justify-between mb-space-md">
+                <h3 class="text-headline-sm text-on-surface">今日明细</h3>
+                <span class="text-label-sm text-on-surface-variant" id="today-total">共 0 笔</span>
+              </div>
+              <div class="flex flex-col gap-space-sm" id="today-transaction-list">
+                <p class="text-body-sm text-on-surface-variant text-center py-space-md" id="today-empty">今天还没有记账，试试记一笔吧！</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 右侧：记一笔表单 -->
+          <div class="lg:col-span-5 flex flex-col">
+            <div class="bg-surface-container-low rounded-xl p-space-lg shadow-sm flex flex-col sticky top-20">
+              <div class="flex items-center justify-between mb-space-lg">
+                <div class="flex items-center gap-space-sm bg-surface-container-lowest p-1 rounded-xl shadow-sm w-full max-w-[240px]">
+                  <button class="flex-1 py-2 text-center rounded-lg text-label-md font-semibold bg-primary text-on-primary transition-all" id="type-expense" type="button">支出</button>
+                  <button class="flex-1 py-2 text-center rounded-lg text-label-md font-semibold text-on-surface-variant hover:text-on-surface transition-all" id="type-income" type="button">收入</button>
+                </div>
+                <div class="flex items-center gap-space-xs text-on-surface-variant text-label-sm">
+                  <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+                  <input class="bg-transparent border-none text-on-surface outline-none cursor-pointer" id="record-date" type="date"/>
+                </div>
+              </div>
+
+              <div class="mb-space-lg">
+                <label class="text-body-sm text-on-surface-variant mb-space-xs block">输入金额</label>
+                <div class="flex items-baseline bg-surface-container-lowest px-space-lg py-space-md rounded-xl shadow-sm">
+                  <span class="text-headline-lg font-bold text-on-surface mr-space-xs">¥</span>
+                  <input autofocus class="w-full bg-transparent border-none text-headline-lg font-bold text-on-surface outline-none placeholder:text-outline-variant" id="record-amount" placeholder="0.00" inputmode="decimal" type="number"/>
+                </div>
+              </div>
+
+              <div class="mb-space-lg">
+                <label class="text-body-sm text-on-surface-variant mb-space-xs block">选择分类</label>
+                <div class="grid grid-cols-4 gap-space-sm" id="category-grid"></div>
+              </div>
+
+              <div class="mb-space-lg">
+                <label class="text-body-sm text-on-surface-variant mb-space-xs block">备注信息 (可选)</label>
+                <input class="w-full bg-surface-container-lowest px-space-md py-space-md rounded-xl text-body-md text-on-surface outline-none placeholder:text-outline-variant shadow-sm" id="record-note" placeholder="写点什么..." type="text"/>
+              </div>
+
+              <button class="w-full bg-primary text-on-primary py-space-md rounded-xl font-bold text-label-md shadow-sm hover:opacity-90 active:scale-[0.99] transition-all flex items-center justify-center gap-space-xs" id="submit-btn" type="button">
+                <span class="material-symbols-outlined text-[20px]">check</span>
+                记一笔
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 详情弹窗 -->
+  <div class="fixed inset-0 bg-on-surface/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-space-md" id="detail-modal">
+    <div class="bg-surface-container-lowest rounded-xl p-space-xl max-w-md w-full shadow-xl flex flex-col gap-space-lg">
+      <div class="flex items-center justify-between">
+        <h3 class="text-headline-sm text-on-surface">账单详情</h3>
+        <button class="p-1 rounded-full hover:bg-surface-container text-on-surface-variant" id="close-detail" type="button">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="flex flex-col items-center py-space-md bg-mint-surface rounded-xl">
+        <span class="text-label-sm text-on-surface-variant mb-space-xs" id="modal-category">--</span>
+        <span class="text-headline-lg font-bold text-on-surface" id="modal-amount">¥0.00</span>
+      </div>
+      <div class="flex flex-col gap-space-md text-body-md">
+        <div class="flex justify-between"><span class="text-on-surface-variant">账单类型</span><span class="font-medium text-on-surface" id="modal-type">--</span></div>
+        <div class="flex justify-between"><span class="text-on-surface-variant">记账时间</span><span class="font-medium text-on-surface" id="modal-time">--</span></div>
+        <div class="flex justify-between"><span class="text-on-surface-variant">备注说明</span><span class="font-medium text-on-surface" id="modal-note">--</span></div>
+      </div>
+      <div class="flex gap-space-md mt-space-md">
+        <button class="flex-1 bg-surface-container-high text-on-surface py-space-md rounded-xl font-medium text-label-md" id="close-detail-2" type="button">关闭</button>
+        <button class="flex-1 bg-error-container text-on-error-container py-space-md rounded-xl font-medium text-label-md" id="delete-detail" type="button">删除账单</button>
+      </div>
+    </div>
+  </div>
+
+<script type="module">
+  import { guardAuth } from './assets/js/guard.js';
+  import { mountShell } from './assets/js/shell.js';
+  import { showToast } from './assets/js/toast.js';
+  import {
+    createRecord, getTodayRecords, getMonthSummary, renderRecordRow, resolveCategory
+  } from './assets/js/records.js';
+  import {
+    getCategoriesByOwner, deleteRecord, getCurrentOwnerId
+  } from './assets/js/storage.js';
+  import { EXPENSE_CATEGORIES, INCOME_CATEGORIES } from './assets/js/seed.js';
+
+  guardAuth();
+  mountShell('home');
+
+  // ---- 顶部月度数据 ----
+  function renderMonthSummary() {
+    const s = getMonthSummary();
+    document.getElementById('month-expense').innerText = `¥${s.expense.toFixed(2)}`;
+    document.getElementById('month-income').innerText = `¥${s.income.toFixed(2)}`;
+    document.getElementById('month-balance').innerText = `¥${s.balance.toFixed(2)}`;
+    document.getElementById('month-expense-hint').innerText = `共 ${s.count} 笔`;
+    document.getElementById('month-income-hint').innerText = '本月所有收入';
+    const now = new Date();
+    document.getElementById('month-label').innerText = `${now.getFullYear()}年${now.getMonth() + 1}月`;
+    const today = getTodayRecords();
+    const todaySpent = today.filter(r => r.type === 'expense').reduce((s, r) => s + r.amount, 0);
+    document.getElementById('today-spent').innerText = `¥${todaySpent.toFixed(2)}`;
+    document.getElementById('today-count').innerText = `${today.length} 笔`;
+  }
+
+  // ---- 今日明细 ----
+  function renderTodayList() {
+    const list = document.getElementById('today-transaction-list');
+    const empty = document.getElementById('today-empty');
+    const records = getTodayRecords();
+    document.getElementById('today-total').innerText = `共 ${records.length} 笔`;
+    if (records.length === 0) {
+      empty.classList.remove('hidden');
+      list.querySelectorAll('.group').forEach(n => n.remove());
+      return;
+    }
+    empty.classList.add('hidden');
+    list.querySelectorAll('.group').forEach(n => n.remove());
+    const html = records.map(r => renderRecordRow(r)).join('');
+    list.insertAdjacentHTML('afterbegin', html);
+    // 绑定删除按钮
+    list.querySelectorAll('[data-action="delete-record"]').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const id = btn.dataset.id;
+        deleteRecord(id);
+        renderTodayList();
+        renderMonthSummary();
+        showToast('已删除该笔账单');
+      });
+    });
+  }
+
+  // ---- 类型 + 分类选择 ----
+  let currentType = 'expense';
+  let selectedCategoryName = EXPENSE_CATEGORIES[0].name;
+  let selectedCategoryIcon = EXPENSE_CATEGORIES[0].icon;
+
+  const grid = document.getElementById('category-grid');
+  function renderCategoryGrid() {
+    const list = currentType === 'expense' ? EXPENSE_CATEGORIES : INCOME_CATEGORIES;
+    grid.innerHTML = list.map((c, i) => {
+      const isActive = i === 0;
+      if (isActive) {
+        selectedCategoryName = c.name;
+        selectedCategoryIcon = c.icon;
+      }
+      const cls = isActive
+        ? 'flex flex-col items-center justify-center p-space-md rounded-xl bg-primary text-on-primary transition-all gap-space-xs'
+        : 'flex flex-col items-center justify-center p-space-md rounded-xl bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container-high transition-all gap-space-xs';
+      return `<button class="${cls}" data-name="${c.name}" data-icon="${c.icon}" type="button">
+        <span class="material-symbols-outlined text-[24px]">${c.icon}</span>
+        <span class="text-label-sm">${c.name}</span>
+      </button>`;
+    }).join('');
+    grid.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        grid.querySelectorAll('button').forEach(b => {
+          b.className = 'flex flex-col items-center justify-center p-space-md rounded-xl bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container-high transition-all gap-space-xs';
+        });
+        btn.className = 'flex flex-col items-center justify-center p-space-md rounded-xl bg-primary text-on-primary transition-all gap-space-xs';
+        selectedCategoryName = btn.dataset.name;
+        selectedCategoryIcon = btn.dataset.icon;
+      });
+    });
+  }
+
+  document.getElementById('type-expense').addEventListener('click', () => {
+    currentType = 'expense';
+    document.getElementById('type-expense').className = 'flex-1 py-2 text-center rounded-lg text-label-md font-semibold bg-primary text-on-primary transition-all';
+    document.getElementById('type-income').className = 'flex-1 py-2 text-center rounded-lg text-label-md font-semibold text-on-surface-variant hover:text-on-surface transition-all';
+    renderCategoryGrid();
+  });
+  document.getElementById('type-income').addEventListener('click', () => {
+    currentType = 'income';
+    document.getElementById('type-income').className = 'flex-1 py-2 text-center rounded-lg text-label-md font-semibold bg-primary text-on-primary transition-all';
+    document.getElementById('type-expense').className = 'flex-1 py-2 text-center rounded-lg text-label-md font-semibold text-on-surface-variant hover:text-on-surface transition-all';
+    renderCategoryGrid();
+  });
+
+  // 日期默认今天
+  const today = new Date();
+  document.getElementById('record-date').value = today.toISOString().slice(0, 10);
+
+  // ---- 提交 ----
+  document.getElementById('submit-btn').addEventListener('click', () => {
+    const amountVal = document.getElementById('record-amount').value.trim();
+    const noteVal = document.getElementById('record-note').value.trim();
+    const dateVal = document.getElementById('record-date').value;
+
+    if (!amountVal || isNaN(amountVal) || Number(amountVal) <= 0) {
+      showToast('请输入有效的金额', 'error');
+      return;
+    }
+    const ownerId = getCurrentOwnerId();
+    const cats = getCategoriesByOwner(ownerId).filter(c => c.type === currentType);
+    const cat = cats.find(c => c.name === selectedCategoryName) || cats[0];
+    if (!cat) {
+      showToast('未找到分类，请先在「我的」中创建分类', 'error');
+      return;
+    }
+    const occurredAt = new Date(`${dateVal}T${new Date().toTimeString().slice(0, 8)}`).toISOString();
+    createRecord({
+      type: currentType,
+      amount: Number(amountVal),
+      categoryId: cat.id,
+      note: noteVal,
+      occurredAt
+    });
+    document.getElementById('record-amount').value = '';
+    document.getElementById('record-note').value = '';
+    document.getElementById('record-amount').focus();
+    renderTodayList();
+    renderMonthSummary();
+    showToast(`已记 ¥${Number(amountVal).toFixed(2)}`, 'success');
+  });
+
+  // ---- 详情弹窗 ----
+  const detailModal = document.getElementById('detail-modal');
+  let currentDetailId = null;
+  document.getElementById('close-detail').addEventListener('click', () => detailModal.classList.add('hidden'));
+  document.getElementById('close-detail-2').addEventListener('click', () => detailModal.classList.add('hidden'));
+  document.getElementById('delete-detail').addEventListener('click', () => {
+    if (currentDetailId) {
+      deleteRecord(currentDetailId);
+      currentDetailId = null;
+      detailModal.classList.add('hidden');
+      renderTodayList();
+      renderMonthSummary();
+      showToast('已删除该笔账单');
+    }
+  });
+  // 点击今日明细行 → 打开详情
+  document.getElementById('today-transaction-list').addEventListener('click', e => {
+    const row = e.target.closest('.group');
+    if (!row) return;
+    const id = row.querySelector('[data-action="delete-record"]')?.dataset.id;
+    if (!id) return;
+    const records = getTodayRecords();
+    const rec = records.find(r => r.id === id);
+    if (!rec) return;
+    const cat = resolveCategory(rec.categoryId);
+    const dt = new Date(rec.occurredAt);
+    const timeStr = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')} ${String(dt.getHours()).padStart(2, '0')}:${String(dt.getMinutes()).padStart(2, '0')}`;
+    currentDetailId = rec.id;
+    document.getElementById('modal-category').innerText = cat.name;
+    document.getElementById('modal-amount').innerText = `${rec.type === 'expense' ? '-' : '+'}¥${rec.amount.toFixed(2)}`;
+    document.getElementById('modal-type').innerText = rec.type === 'expense' ? '支出' : '收入';
+    document.getElementById('modal-time').innerText = timeStr;
+    document.getElementById('modal-note').innerText = rec.note || '(无)';
+    detailModal.classList.remove('hidden');
+  });
+
+  // 初始渲染
+  renderCategoryGrid();
+  renderTodayList();
+  renderMonthSummary();
+</script>
+</body>
+</html>

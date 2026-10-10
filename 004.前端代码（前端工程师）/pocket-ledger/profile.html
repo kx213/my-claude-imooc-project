@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>口袋账本 · 我的</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="assets/css/tailwind.config.js"></script>
+  <link href="assets/css/base.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+</head>
+<body class="bg-surface font-body-md text-on-surface" data-page="profile">
+  <div id="app-sidebar"></div>
+  <div class="pl-64">
+    <div id="app-header"></div>
+    <main id="app-main" class="relative pt-16 bg-surface min-h-screen p-space-xl">
+      <div class="flex flex-col w-full pb-16 space-y-space-xl">
+
+        <!-- F12-D 7天未备份提醒（条件渲染） -->
+        <div class="hidden bg-gradient-to-r from-tertiary-container/20 via-surface-container-high/50 to-primary-container/20 rounded-xl p-space-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md shadow-sm" id="backup-banner">
+          <div class="flex items-center gap-space-md">
+            <div class="w-12 h-12 rounded-xl bg-tertiary-container text-on-tertiary flex items-center justify-center shrink-0 shadow-sm">
+              <span class="material-symbols-outlined text-[24px]">backup</span>
+            </div>
+            <div>
+              <div class="flex items-center gap-space-sm">
+                <h4 class="text-headline-sm font-bold text-on-surface">定期备份提醒（系统安全建议）</h4>
+                <span class="bg-tertiary text-on-tertiary text-label-sm px-2 py-0.5 rounded-full font-bold">建议</span>
+              </div>
+              <p class="text-body-md text-on-surface-variant mt-0.5" id="backup-banner-text">你已多天未备份，建议立即备份以防数据丢失。</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-space-sm w-full sm:w-auto justify-end">
+            <button class="px-space-md py-space-sm text-outline hover:text-on-surface text-label-md font-medium" id="dismiss-banner" type="button">暂不提醒</button>
+            <button class="bg-tertiary hover:bg-tertiary/90 text-on-tertiary px-space-lg py-space-sm rounded-xl text-label-md font-medium shadow-sm transition-all flex items-center gap-space-xs" id="banner-backup" type="button">
+              <span class="material-symbols-outlined text-[18px]">download</span>
+              立即备份
+            </button>
+          </div>
+        </div>
+
+        <!-- 用户卡 + 同步状态 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-space-lg">
+          <div class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col justify-between relative overflow-hidden">
+            <div class="absolute -right-16 -top-16 w-48 h-48 rounded-full bg-primary/10 pointer-events-none blur-2xl"></div>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-lg relative z-10">
+              <div class="flex items-center gap-space-lg">
+                <div class="w-20 h-20 rounded-2xl bg-primary text-on-primary flex items-center justify-center text-headline-lg font-bold shadow-md shadow-primary/20" id="avatar-initial">U</div>
+                <div class="flex flex-col">
+                  <div class="flex items-center gap-space-sm">
+                    <h2 class="text-headline-lg font-bold text-on-surface" id="user-display-name">--</h2>
+                    <span class="bg-primary-fixed/50 text-on-primary-fixed text-label-sm px-space-sm py-0.5 rounded-full font-medium">本地用户</span>
+                  </div>
+                  <p class="text-body-md text-outline mt-0.5" id="user-meta">ID: --</p>
+                </div>
+              </div>
+              <button class="flex items-center gap-space-xs bg-surface-container-low hover:bg-surface-container-high text-on-surface px-space-md py-space-sm rounded-xl text-label-md font-medium transition-all" id="edit-profile" type="button">
+                <span class="material-symbols-outlined text-[18px]">edit</span>
+                编辑资料
+              </button>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-space-md mt-space-xl pt-space-lg border-t border-surface-container-high/40 text-on-surface relative z-10">
+              <div>
+                <span class="text-label-sm text-outline block">当前使用账本</span>
+                <span class="text-headline-sm font-bold text-primary mt-0.5 block flex items-center gap-space-xs">
+                  <span class="material-symbols-outlined text-[18px]">book</span> 个人账本
+                </span>
+              </div>
+              <div>
+                <span class="text-label-sm text-outline block">账本成员</span>
+                <span class="text-headline-sm font-bold text-on-surface mt-0.5 block">1 人 (仅自己)</span>
+              </div>
+              <div class="col-span-2 sm:col-span-1">
+                <span class="text-label-sm text-outline block">本月记账天数</span>
+                <span class="text-headline-sm font-bold text-on-surface mt-0.5 block" id="record-days">0 天</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-space-md">
+                <span class="text-label-md font-semibold text-outline uppercase tracking-wider">数据安全</span>
+                <span class="w-3 h-3 rounded-full bg-primary inline-block"></span>
+              </div>
+              <div class="flex items-baseline gap-space-sm">
+                <span class="text-headline-lg font-bold text-on-surface">PBKDF2 加密</span>
+              </div>
+              <p class="text-body-sm text-outline mt-1" id="last-backup-info">上次备份：--</p>
+            </div>
+            <div class="mt-space-lg">
+              <button class="w-full flex items-center justify-center gap-space-sm bg-primary hover:bg-primary/90 text-on-primary py-space-md rounded-xl text-label-md font-medium transition-all shadow-sm" id="export-json" type="button">
+                <span class="material-symbols-outlined text-[18px]">download</span>
+                立即导出 JSON 备份
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 功能菜单 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+          <!-- 账本管理 -->
+          <div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col justify-between hover:shadow-md transition-all">
+            <div>
+              <div class="flex items-center justify-between mb-space-md">
+                <div class="flex items-center gap-space-md">
+                  <div class="w-12 h-12 rounded-xl bg-primary-fixed text-on-primary-fixed flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[24px]">account_balance_wallet</span>
+                  </div>
+                  <div>
+                    <h3 class="text-headline-sm font-bold text-on-surface">账本管理</h3>
+                    <p class="text-body-sm text-outline">切换、新建共享账本或通过邀请码加入</p>
+                  </div>
+                </div>
+                <span class="text-label-sm bg-surface-container-low text-on-surface-variant px-space-sm py-1 rounded-lg">共 1 个账本</span>
+              </div>
+              <div class="p-space-md rounded-xl bg-primary/5 flex items-center justify-between border border-primary/20 my-space-lg">
+                <div class="flex items-center gap-space-md">
+                  <span class="material-symbols-outlined text-primary">book</span>
+                  <div>
+                    <span class="text-label-md font-bold text-on-surface block">个人账本 (当前)</span>
+                    <span class="text-body-sm text-outline">记录日常开销</span>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined text-primary">check_circle</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-space-md pt-space-md border-t border-surface-container-high/40">
+              <button class="flex-1 bg-surface-container-low hover:bg-surface-container-high text-on-surface py-space-md rounded-xl text-label-md font-medium transition-all flex items-center justify-center gap-space-xs" id="open-new-ledger" type="button">
+                <span class="material-symbols-outlined text-[18px]">add</span>
+                新建共享账本
+              </button>
+              <button class="flex-1 bg-surface-container-low hover:bg-surface-container-high text-on-surface py-space-md rounded-xl text-label-md font-medium transition-all flex items-center justify-center gap-space-xs" id="open-join-ledger" type="button">
+                <span class="material-symbols-outlined text-[18px]">vpn_key</span>
+                6位邀请码加入
+              </button>
+            </div>
+          </div>
+
+          <!-- 分类管理 -->
+          <div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col justify-between hover:shadow-md transition-all">
+            <div>
+              <div class="flex items-center justify-between mb-space-md">
+                <div class="flex items-center gap-space-md">
+                  <div class="w-12 h-12 rounded-xl bg-secondary-fixed text-on-secondary-fixed-variant flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[24px]">category</span>
+                  </div>
+                  <div>
+                    <h3 class="text-headline-sm font-bold text-on-surface">分类管理</h3>
+                    <p class="text-body-sm text-outline">预置分类查看与自定义分类新增/编辑</p>
+                  </div>
+                </div>
+                <button class="text-primary text-label-md font-medium hover:underline" id="manage-categories" type="button">管理全部</button>
+              </div>
+              <div class="grid grid-cols-4 gap-space-sm my-space-lg" id="category-preview"></div>
+            </div>
+            <div class="pt-space-md border-t border-surface-container-high/40 flex items-center justify-between text-body-sm text-outline">
+              <span id="category-count">支出分类 (0) • 收入分类 (0)</span>
+              <button class="text-primary font-medium hover:underline flex items-center gap-space-xs" id="open-add-category" type="button">
+                <span class="material-symbols-outlined text-[16px]">add_circle</span> 新增分类
+              </button>
+            </div>
+          </div>
+
+          <!-- 数据管理与导出 -->
+          <div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col justify-between hover:shadow-md transition-all">
+            <div>
+              <div class="flex items-center gap-space-md mb-space-md">
+                <div class="w-12 h-12 rounded-xl bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[24px]">database</span>
+                </div>
+                <div>
+                  <h3 class="text-headline-sm font-bold text-on-surface">数据管理与导出</h3>
+                  <p class="text-body-sm text-outline">导出 JSON 备份 / 导出 CSV 报表</p>
+                </div>
+              </div>
+              <p class="text-body-md text-on-surface-variant my-space-md">
+                所有记账数据均安全保存在您的本地浏览器中。您可以随时导出完整备份以防丢失或更换设备。
+              </p>
+            </div>
+            <div class="grid grid-cols-2 gap-space-md pt-space-md border-t border-surface-container-high/40">
+              <button class="bg-surface-container-low hover:bg-surface-container-high text-on-surface py-space-md px-space-md rounded-xl text-label-md font-medium transition-all flex items-center justify-center gap-space-xs" id="export-json-2" type="button">
+                <span class="material-symbols-outlined text-[18px]">code</span>
+                导出 JSON 备份
+              </button>
+              <button class="bg-surface-container-low hover:bg-surface-container-high text-on-surface py-space-md px-space-md rounded-xl text-label-md font-medium transition-all flex items-center justify-center gap-space-xs" id="export-csv" type="button">
+                <span class="material-symbols-outlined text-[18px]">table_chart</span>
+                导出 CSV 报表
+              </button>
+            </div>
+          </div>
+
+          <!-- 从备份恢复 -->
+          <div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col justify-between hover:shadow-md transition-all">
+            <div>
+              <div class="flex items-center gap-space-md mb-space-md">
+                <div class="w-12 h-12 rounded-xl bg-surface-container-high text-on-surface flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[24px]">settings_backup_restore</span>
+                </div>
+                <div>
+                  <h3 class="text-headline-sm font-bold text-on-surface">从备份恢复 JSON</h3>
+                  <p class="text-body-sm text-outline">上传之前导出的 JSON 文件恢复账本数据</p>
+                </div>
+              </div>
+              <div class="border-2 border-dashed border-outline-variant hover:border-primary rounded-xl p-space-lg text-center cursor-pointer transition-all bg-surface-container-low/50 my-space-md" id="upload-area">
+                <span class="material-symbols-outlined text-[32px] text-primary mb-2">upload_file</span>
+                <p class="text-label-md font-medium text-on-surface">点击上传或将 JSON 文件拖拽到此处</p>
+                <p class="text-body-sm text-outline mt-1">支持 Pocket Ledger V1.0 / V1.0.1 格式</p>
+                <input accept=".json" class="hidden" id="json-file-input" type="file"/>
+              </div>
+            </div>
+            <div class="pt-space-md border-t border-surface-container-high/40 flex items-center justify-between text-body-sm text-outline">
+              <span>恢复前会自动创建安全快照</span>
+              <span class="text-primary font-medium cursor-pointer" id="help-link">查看帮助</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- F11 退出登录 -->
+        <div class="mt-space-xl pt-space-lg border-t border-surface-container-high flex flex-col items-center justify-center">
+          <button class="w-full sm:w-auto px-space-xl py-space-md bg-error-container hover:bg-error hover:text-on-error text-on-error-container rounded-xl text-label-md font-bold transition-all flex items-center justify-center gap-space-sm shadow-sm" id="open-logout" type="button">
+            <span class="material-symbols-outlined text-[20px]">logout</span>
+            退出登录
+          </button>
+          <p class="text-body-sm text-outline mt-space-sm">退出后当前账本数据仍保留在本机</p>
+        </div>
+
+        <!-- 退出登录确认弹窗 -->
+        <div class="fixed inset-0 z-50 bg-inverse-surface/40 backdrop-blur-sm hidden flex items-center justify-center p-space-md" id="logout-modal">
+          <div class="bg-surface-container-lowest rounded-2xl max-w-md w-full p-space-xl shadow-xl">
+            <div class="w-12 h-12 rounded-full bg-error-container text-error flex items-center justify-center mb-space-md">
+              <span class="material-symbols-outlined text-[24px]">warning</span>
+            </div>
+            <h3 class="text-headline-md font-bold text-on-surface">确认退出登录？</h3>
+            <p class="text-body-md text-outline mt-space-sm">
+              退出后当前账本数据仍保留在本机。下次登录时可直接继续记账。
+            </p>
+            <div class="flex items-center justify-end gap-space-md mt-space-xl">
+              <button class="px-space-lg py-space-md bg-surface-container-low hover:bg-surface-container-high text-on-surface rounded-xl text-label-md font-medium transition-all" id="cancel-logout" type="button">取消</button>
+              <button class="px-space-lg py-space-md bg-error hover:bg-error/90 text-on-error rounded-xl text-label-md font-bold transition-all shadow-sm" id="confirm-logout" type="button">确认退出</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 新建共享账本 -->
+        <div class="fixed inset-0 z-50 bg-inverse-surface/40 backdrop-blur-sm hidden flex items-center justify-center p-space-md" id="new-ledger-modal">
+          <div class="bg-surface-container-lowest rounded-2xl max-w-md w-full p-space-xl shadow-xl">
+            <div class="flex items-center justify-between mb-space-lg">
+              <h3 class="text-headline-md font-bold text-on-surface">新建共享账本</h3>
+              <button class="text-outline hover:text-on-surface" id="close-new-ledger" type="button"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <div class="space-y-space-md">
+              <div>
+                <label class="block text-label-md font-medium text-on-surface mb-space-xs">账本名称</label>
+                <input class="w-full bg-surface-container-low border-0 px-space-md py-space-md rounded-xl text-on-surface focus:ring-2 focus:ring-primary outline-none" id="new-ledger-name" placeholder="例如：家庭装修、旅行基金" type="text"/>
+              </div>
+              <div>
+                <label class="block text-label-md font-medium text-on-surface mb-space-xs">账本描述</label>
+                <textarea class="w-full bg-surface-container-low border-0 px-space-md py-space-md rounded-xl text-on-surface focus:ring-2 focus:ring-primary outline-none h-24" id="new-ledger-desc" placeholder="简要描述该账本的用途..."></textarea>
+              </div>
+            </div>
+            <div class="flex items-center justify-end gap-space-md mt-space-xl">
+              <button class="px-space-lg py-space-md bg-surface-container-low text-on-surface rounded-xl text-label-md font-medium" id="cancel-new-ledger" type="button">取消</button>
+              <button class="px-space-lg py-space-md bg-primary text-on-primary rounded-xl text-label-md font-bold shadow-sm" id="submit-new-ledger" type="button">创建并加入</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 加入共享账本 -->
+        <div class="fixed inset-0 z-50 bg-inverse-surface/40 backdrop-blur-sm hidden flex items-center justify-center p-space-md" id="join-ledger-modal">
+          <div class="bg-surface-container-lowest rounded-2xl max-w-md w-full p-space-xl shadow-xl">
+            <div class="flex items-center justify-between mb-space-lg">
+              <h3 class="text-headline-md font-bold text-on-surface">通过邀请码加入</h3>
+              <button class="text-outline hover:text-on-surface" id="close-join-ledger" type="button"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <p class="text-body-md text-outline mb-space-lg">请输入由账本管理员提供的 6 位数字或字母邀请码：</p>
+            <div class="flex justify-center gap-space-sm mb-space-xl" id="invite-code-boxes">
+              <input class="w-12 h-14 text-center text-headline-md font-bold bg-surface-container-low rounded-xl focus:ring-2 focus:ring-primary outline-none" maxlength="1" type="text"/>
+              <input class="w-12 h-14 text-center text-headline-md font-bold bg-surface-container-low rounded-xl focus:ring-2 focus:ring-primary outline-none" maxlength="1" type="text"/>
+              <input class="w-12 h-14 text-center text-headline-md font-bold bg-surface-container-low rounded-xl focus:ring-2 focus:ring-primary outline-none" maxlength="1" type="text"/>
+              <input class="w-12 h-14 text-center text-headline-md font-bold bg-surface-container-low rounded-xl focus:ring-2 focus:ring-primary outline-none" maxlength="1" type="text"/>
+              <input class="w-12 h-14 text-center text-headline-md font-bold bg-surface-container-low rounded-xl focus:ring-2 focus:ring-primary outline-none" maxlength="1" type="text"/>
+              <input class="w-12 h-14 text-center text-headline-md font-bold bg-surface-container-low rounded-xl focus:ring-2 focus:ring-primary outline-none" maxlength="1" type="text"/>
+            </div>
+            <div class="flex items-center justify-end gap-space-md">
+              <button class="px-space-lg py-space-md bg-surface-container-low text-on-surface rounded-xl text-label-md font-medium" id="cancel-join-ledger" type="button">取消</button>
+              <button class="px-space-lg py-space-md bg-primary text-on-primary rounded-xl text-label-md font-bold shadow-sm" id="submit-join-ledger" type="button">确认加入</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 新增分类 -->
+        <div class="fixed inset-0 z-50 bg-inverse-surface/40 backdrop-blur-sm hidden flex items-center justify-center p-space-md" id="add-category-modal">
+          <div class="bg-surface-container-lowest rounded-2xl max-w-md w-full p-space-xl shadow-xl">
+            <div class="flex items-center justify-between mb-space-lg">
+              <h3 class="text-headline-md font-bold text-on-surface">新增自定义分类</h3>
+              <button class="text-outline hover:text-on-surface" id="close-add-category" type="button"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <div class="space-y-space-md">
+              <div>
+                <label class="block text-label-md font-medium text-on-surface mb-space-xs">分类类型</label>
+                <div class="grid grid-cols-2 gap-space-sm">
+                  <button class="py-space-sm bg-primary text-on-primary rounded-xl text-label-md font-medium" id="cat-type-expense" type="button">支出</button>
+                  <button class="py-space-sm bg-surface-container-low text-on-surface rounded-xl text-label-md font-medium" id="cat-type-income" type="button">收入</button>
+                </div>
+              </div>
+              <div>
+                <label class="block text-label-md font-medium text-on-surface mb-space-xs">分类名称</label>
+                <input class="w-full bg-surface-container-low border-0 px-space-md py-space-md rounded-xl text-on-surface focus:ring-2 focus:ring-primary outline-none" id="new-cat-name" placeholder="例如：宠物、健身、数码" type="text"/>
+              </div>
+              <div>
+                <label class="block text-label-md font-medium text-on-surface mb-space-xs">图标 (可选)</label>
+                <input class="w-full bg-surface-container-low border-0 px-space-md py-space-md rounded-xl text-on-surface focus:ring-2 focus:ring-primary outline-none" id="new-cat-icon" placeholder="默认: category" type="text"/>
+              </div>
+            </div>
+            <div class="flex items-center justify-end gap-space-md mt-space-xl">
+              <button class="px-space-lg py-space-md bg-surface-container-low text-on-surface rounded-xl text-label-md font-medium" id="cancel-add-category" type="button">取消</button>
+              <button class="px-space-lg py-space-md bg-primary text-on-primary rounded-xl text-label-md font-bold shadow-sm" id="submit-new-category" type="button">保存分类</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+<script type="module">
+  import { guardAuth } from './assets/js/guard.js';
+  import { mountShell } from './assets/js/shell.js';
+  import { showToast } from './assets/js/toast.js';
+  import { logout, getCurrentUser } from './assets/js/auth.js';
+  import { exportCurrentUserJson, exportCurrentUserCsv, restoreFromJsonFile } from './assets/js/backup.js';
+  import {
+    getCurrentOwnerId, getCategoriesByOwner,
+    getRecordsByOwner,
+    addBook, addCategories, uid, nowIso,
+    getLastBackupAt, setLastBackupAt,
+    getLastBackupDismiss, setLastBackupDismiss
+  } from './assets/js/storage.js';
+
+  guardAuth();
+  mountShell('profile');
+
+  const user = getCurrentUser();
+  const ownerId = getCurrentOwnerId();
+
+  // 用户卡
+  document.getElementById('avatar-initial').innerText = user.displayName.slice(0, 1).toUpperCase();
+  document.getElementById('user-display-name').innerText = user.displayName;
+  document.getElementById('user-meta').innerText = `ID: ${ownerId} • 注册于 ${new Date(user.createdAt).toLocaleDateString('zh-CN')}`;
+
+  // 上次备份信息
+  const last = getLastBackupAt();
+  document.getElementById('last-backup-info').innerText = last ? `上次备份：${new Date(last).toLocaleString('zh-CN')}` : '你尚未进行过备份';
+
+  // 本月记账天数
+  const records = getRecordsByOwner(ownerId);
+  const ym = new Date().toISOString().slice(0, 7);
+  const days = new Set(records.filter(r => r.occurredAt.slice(0, 7) === ym).map(r => r.occurredAt.slice(0, 10)));
+  document.getElementById('record-days').innerText = `${days.size} 天`;
+
+  // 分类预览
+  const cats = getCategoriesByOwner(ownerId);
+  const expenseCats = cats.filter(c => c.type === 'expense');
+  const incomeCats = cats.filter(c => c.type === 'income');
+  document.getElementById('category-count').innerText = `支出分类 (${expenseCats.length}) • 收入分类 (${incomeCats.length})`;
+  const preview = [...expenseCats.slice(0, 3), ...incomeCats.slice(0, 1)];
+  document.getElementById('category-preview').innerHTML = preview.map(c => `
+    <div class="flex flex-col items-center p-space-sm bg-surface-container-low rounded-xl">
+      <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-1">
+        <span class="material-symbols-outlined text-[20px]">${c.icon}</span>
+      </div>
+      <span class="text-body-sm text-on-surface">${c.name}</span>
+    </div>
+  `).join('') + `<div class="flex flex-col items-center p-space-sm bg-surface-container-low rounded-xl border border-dashed border-outline-variant cursor-pointer hover:bg-surface-container-high" id="open-add-category-2">
+    <div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center mb-1">
+      <span class="material-symbols-outlined text-[20px]">add</span>
+    </div>
+    <span class="text-body-sm text-on-surface">自定义</span>
+  </div>`;
+
+  // F12-D 备份提醒
+  const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
+  const dismiss = getLastBackupDismiss();
+  const inDismissWindow = dismiss && (Date.now() - new Date(dismiss).getTime() < SEVEN_DAYS);
+  const needBackup = !last || (Date.now() - new Date(last).getTime() >= SEVEN_DAYS);
+  if (needBackup && !inDismissWindow) {
+    const days = last ? Math.floor((Date.now() - new Date(last).getTime()) / (24 * 60 * 60 * 1000)) : null;
+    document.getElementById('backup-banner-text').innerText = days
+      ? `你已 ${days} 天未备份，建议立即备份以防数据丢失。`
+      : '你尚未进行过任何备份，建议立即备份以防数据丢失。';
+    document.getElementById('backup-banner').classList.remove('hidden');
+    document.getElementById('backup-banner').classList.add('flex');
+  }
+  document.getElementById('dismiss-banner').addEventListener('click', () => {
+    setLastBackupDismiss(new Date().toISOString());
+    document.getElementById('backup-banner').classList.add('hidden');
+    document.getElementById('backup-banner').classList.remove('flex');
+    showToast('已暂不提醒，7 天内不再提示', 'success');
+  });
+
+  // 导出 JSON
+  function doExportJson() {
+    try {
+      exportCurrentUserJson();
+      showToast('JSON 备份导出成功！', 'success');
+      setLastBackupAt(new Date().toISOString());
+      document.getElementById('last-backup-info').innerText = `上次备份：${new Date().toLocaleString('zh-CN')}`;
+      document.getElementById('backup-banner').classList.add('hidden');
+      document.getElementById('backup-banner').classList.remove('flex');
+    } catch (err) {
+      showToast('导出失败：' + err.message, 'error');
+    }
+  }
+  document.getElementById('banner-backup').addEventListener('click', doExportJson);
+  document.getElementById('export-json').addEventListener('click', doExportJson);
+  document.getElementById('export-json-2').addEventListener('click', doExportJson);
+
+  // 导出 CSV
+  document.getElementById('export-csv').addEventListener('click', () => {
+    try {
+      exportCurrentUserCsv();
+      showToast('CSV 报表导出成功！', 'success');
+    } catch (err) {
+      showToast('导出失败：' + err.message, 'error');
+    }
+  });
+
+  // 上传恢复
+  document.getElementById('upload-area').addEventListener('click', () => document.getElementById('json-file-input').click());
+  document.getElementById('json-file-input').addEventListener('change', async e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    showToast('正在校验并恢复备份数据...', 'info');
+    // 解析后判断是否同名账号
+    let data;
+    try {
+      data = JSON.parse(await file.text());
+    } catch (err) {
+      showToast('备份文件无效：JSON 解析失败', 'error');
+      return;
+    }
+    if (!data.ownerId) {
+      showToast('备份文件无效：缺少 ownerId', 'error');
+      return;
+    }
+    let strategy = 'merge';
+    if (data.ownerId === ownerId) {
+      const choice = prompt('检测到同名账号备份，请选择恢复策略：\n1 = 覆盖（删除现有后导入）\n2 = 合并（保留两边数据）\n3 = 取消', '2');
+      if (choice === '3' || choice === null) return;
+      strategy = choice === '1' ? 'overwrite' : 'merge';
+    } else {
+      if (!confirm(`备份来自其他账号「${data.ownerId}」，将自动注册并登录。继续？`)) return;
+    }
+    const result = await restoreFromJsonFile(file, strategy);
+    if (result.ok) {
+      showToast(`已恢复 ${result.summary.records} 条记录、${result.summary.books} 个账本`, 'success');
+      setTimeout(() => window.location.reload(), 800);
+    } else {
+      showToast(result.error || '恢复失败', 'error');
+    }
+  });
+
+  // 帮助
+  document.getElementById('help-link').addEventListener('click', () => {
+    alert('JSON 备份文件包含您某个时间点的所有数据（账本 / 记录 / 分类 / 预算）。\n\n支持：\n• 备份来自其他账号 → 自动注册并登录\n• 备份来自当前账号 → 覆盖 / 合并 / 取消\n\n文件名格式：pocket-ledger-{username}-{timestamp}.json');
+  });
+
+  // 编辑资料
+  document.getElementById('edit-profile').addEventListener('click', () => {
+    const newName = prompt('修改显示昵称（不改用户名）：', user.displayName);
+    if (newName && newName !== user.displayName) {
+      const users = JSON.parse(localStorage.getItem('ma_users'));
+      users[ownerId].displayName = newName;
+      localStorage.setItem('ma_users', JSON.stringify(users));
+      showToast('已更新昵称', 'success');
+      setTimeout(() => window.location.reload(), 500);
+    }
+  });
+
+  // 退出登录
+  const logoutModal = document.getElementById('logout-modal');
+  document.getElementById('open-logout').addEventListener('click', () => logoutModal.classList.remove('hidden'));
+  document.getElementById('cancel-logout').addEventListener('click', () => logoutModal.classList.add('hidden'));
+  document.getElementById('confirm-logout').addEventListener('click', () => {
+    logout();
+    showToast('已安全退出登录', 'success');
+    setTimeout(() => (window.location.href = 'index.html'), 600);
+  });
+
+  // 新建共享账本
+  const newLedgerModal = document.getElementById('new-ledger-modal');
+  document.getElementById('open-new-ledger').addEventListener('click', () => newLedgerModal.classList.remove('hidden'));
+  document.getElementById('close-new-ledger').addEventListener('click', () => newLedgerModal.classList.add('hidden'));
+  document.getElementById('cancel-new-ledger').addEventListener('click', () => newLedgerModal.classList.add('hidden'));
+  document.getElementById('submit-new-ledger').addEventListener('click', () => {
+    const name = document.getElementById('new-ledger-name').value.trim();
+    if (!name) return showToast('请填写账本名称', 'error');
+    addBook({ id: uid('book'), ownerId, name, type: 'shared', createdAt: nowIso() });
+    newLedgerModal.classList.add('hidden');
+    showToast('共享账本创建成功！', 'success');
+  });
+
+  // 加入共享账本
+  const joinLedgerModal = document.getElementById('join-ledger-modal');
+  document.getElementById('open-join-ledger').addEventListener('click', () => joinLedgerModal.classList.remove('hidden'));
+  document.getElementById('close-join-ledger').addEventListener('click', () => joinLedgerModal.classList.add('hidden'));
+  document.getElementById('cancel-join-ledger').addEventListener('click', () => joinLedgerModal.classList.add('hidden'));
+  // 邀请码输入自动跳格
+  const inputs = document.querySelectorAll('#invite-code-boxes input');
+  inputs.forEach((input, i) => {
+    input.addEventListener('input', () => {
+      if (input.value && i < inputs.length - 1) inputs[i + 1].focus();
+    });
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Backspace' && !input.value && i > 0) inputs[i - 1].focus();
+    });
+  });
+  document.getElementById('submit-join-ledger').addEventListener('click', () => {
+    const code = Array.from(inputs).map(i => i.value).join('');
+    if (code.length < 6) return showToast('请输入完整的 6 位邀请码', 'error');
+    showToast('已提交邀请码（原型阶段未对接云端）', 'info');
+    joinLedgerModal.classList.add('hidden');
+    inputs.forEach(i => i.value = '');
+  });
+
+  // 新增分类
+  const addCatModal = document.getElementById('add-category-modal');
+  let newCatType = 'expense';
+  function openAddCategory() {
+    addCatModal.classList.remove('hidden');
+    newCatType = 'expense';
+    document.getElementById('cat-type-expense').className = 'py-space-sm bg-primary text-on-primary rounded-xl text-label-md font-medium';
+    document.getElementById('cat-type-income').className = 'py-space-sm bg-surface-container-low text-on-surface rounded-xl text-label-md font-medium';
+    document.getElementById('new-cat-name').value = '';
+    document.getElementById('new-cat-icon').value = '';
+  }
+  document.getElementById('open-add-category').addEventListener('click', openAddCategory);
+  document.getElementById('open-add-category-2')?.addEventListener('click', openAddCategory);
+  document.getElementById('close-add-category').addEventListener('click', () => addCatModal.classList.add('hidden'));
+  document.getElementById('cancel-add-category').addEventListener('click', () => addCatModal.classList.add('hidden'));
+  document.getElementById('cat-type-expense').addEventListener('click', () => {
+    newCatType = 'expense';
+    document.getElementById('cat-type-expense').className = 'py-space-sm bg-primary text-on-primary rounded-xl text-label-md font-medium';
+    document.getElementById('cat-type-income').className = 'py-space-sm bg-surface-container-low text-on-surface rounded-xl text-label-md font-medium';
+  });
+  document.getElementById('cat-type-income').addEventListener('click', () => {
+    newCatType = 'income';
+    document.getElementById('cat-type-income').className = 'py-space-sm bg-primary text-on-primary rounded-xl text-label-md font-medium';
+    document.getElementById('cat-type-expense').className = 'py-space-sm bg-surface-container-low text-on-surface rounded-xl text-label-md font-medium';
+  });
+  document.getElementById('submit-new-category').addEventListener('click', () => {
+    const name = document.getElementById('new-cat-name').value.trim();
+    const icon = (document.getElementById('new-cat-icon').value.trim() || 'category').slice(0, 32);
+    if (!name) return showToast('请填写分类名称', 'error');
+    addCategories([{
+      id: uid('cat'),
+      ownerId,
+      name,
+      icon,
+      type: newCatType,
+      isPreset: false,
+      sortOrder: 999
+    }]);
+    addCatModal.classList.add('hidden');
+    showToast('自定义分类添加成功！', 'success');
+    setTimeout(() => window.location.reload(), 500);
+  });
+
+  // 管理分类（原型占位）
+  document.getElementById('manage-categories').addEventListener('click', () => {
+    showToast('进入全量分类管理面板（原型阶段）', 'info');
+  });
+</script>
+</body>
+</html>

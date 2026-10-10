@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>口袋账本 · 预算</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="assets/css/tailwind.config.js"></script>
+  <link href="assets/css/base.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+</head>
+<body class="bg-surface font-body-md text-on-surface" data-page="budget">
+  <div id="app-sidebar"></div>
+  <div class="pl-64">
+    <div id="app-header"></div>
+    <main id="app-main" class="relative pt-16 bg-surface min-h-screen p-space-xl">
+      <div class="flex flex-col w-full pb-space-xl">
+        <!-- Top Summary Banner & Monthly Overview -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-space-lg mb-space-xl">
+          <div class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-space-xl shadow-sm relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute -right-12 -top-12 w-64 h-64 bg-primary/5 rounded-full blur-2xl pointer-events-none"></div>
+            <div>
+              <div class="flex items-center justify-between mb-space-md">
+                <div class="flex items-center gap-space-sm">
+                  <span class="material-symbols-outlined text-primary text-[28px]" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+                  <span class="font-headline-sm text-on-surface" id="budget-period-label">本月 预算总览</span>
+                </div>
+                <button class="bg-primary hover:bg-primary/90 text-on-primary font-label-md px-space-md py-space-sm rounded-xl transition-all shadow-sm flex items-center gap-space-xs" id="open-budget-modal" type="button">
+                  <span class="material-symbols-outlined text-[18px]">add_circle</span>
+                  设置新预算
+                </button>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-space-md my-space-lg">
+                <div class="bg-surface-container-low p-space-md rounded-xl">
+                  <span class="text-body-sm text-outline block mb-space-xs">本月总预算</span>
+                  <span class="font-headline-md text-on-surface" id="total-budget">¥0.00</span>
+                </div>
+                <div class="bg-surface-container-low p-space-md rounded-xl">
+                  <span class="text-body-sm text-outline block mb-space-xs">已支出金额</span>
+                  <span class="font-headline-md text-primary" id="total-used">¥0.00</span>
+                </div>
+                <div class="bg-surface-container-low p-space-md rounded-xl">
+                  <span class="text-body-sm text-outline block mb-space-xs">剩余可用</span>
+                  <span class="font-headline-md text-on-surface" id="total-left">¥0.00</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-label-sm mb-space-xs">
+                <span class="text-on-surface font-medium" id="progress-label">总预算消耗进度 (0%)</span>
+                <span class="text-primary font-medium" id="progress-status">未设置预算</span>
+              </div>
+              <div class="w-full bg-surface-container-low h-3 rounded-full overflow-hidden">
+                <div class="bg-primary h-full rounded-full transition-all duration-500" id="progress-bar" style="width:0%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-space-sm mb-space-md">
+                <span class="material-symbols-outlined text-warm-amber text-[24px]" style="font-variation-settings: 'FILL' 1;">insights</span>
+                <span class="font-headline-sm text-on-surface">健康消费评估</span>
+              </div>
+              <p class="text-body-md text-on-surface-variant mb-space-lg" id="health-summary">
+                暂无预算数据。设置总预算和分类预算后，可在此查看消费健康度评估。
+              </p>
+              <div class="space-y-space-sm">
+                <div class="flex items-center justify-between text-body-sm">
+                  <span class="text-outline">预算执行健康度</span>
+                  <span class="text-primary font-bold" id="health-score">--</span>
+                </div>
+                <div class="flex items-center justify-between text-body-sm">
+                  <span class="text-outline">超支预警分类</span>
+                  <span class="text-soft-rose font-bold" id="overspend-cats">--</span>
+                </div>
+              </div>
+            </div>
+            <div class="pt-space-md">
+              <button class="w-full py-space-sm bg-surface-container-low hover:bg-surface-container-high text-on-surface text-label-md rounded-xl transition-all cursor-pointer" id="simulate-warn" type="button">测试 80% 提醒</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category Budgets -->
+        <div class="mb-space-xl">
+          <div class="flex items-center justify-between mb-space-lg">
+            <div>
+              <h2 class="font-headline-md text-on-surface">分类预算监测</h2>
+              <p class="text-body-sm text-outline">实时监控各项支出，达到 80% 与 100% 将自动发送预警通知</p>
+            </div>
+            <div class="flex gap-space-sm">
+              <button class="px-space-md py-space-sm bg-surface-container-lowest hover:bg-surface-container-low text-on-surface text-label-sm rounded-xl shadow-sm transition-all cursor-pointer" id="simulate-80" type="button">测试 80% 提醒</button>
+              <button class="px-space-md py-space-sm bg-surface-container-lowest hover:bg-surface-container-low text-on-surface text-label-sm rounded-xl shadow-sm transition-all cursor-pointer" id="simulate-100" type="button">测试 100% 超支</button>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-lg" id="category-list">
+            <p class="text-body-sm text-on-surface-variant col-span-full text-center py-space-md" id="cat-empty">暂无分类预算，去右上角「设置新预算」添加吧。</p>
+          </div>
+        </div>
+
+        <!-- 历史日志 -->
+        <div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm">
+          <div class="flex items-center justify-between mb-space-lg">
+            <div>
+              <h2 class="font-headline-md text-on-surface">预算历史与超支日志</h2>
+              <p class="text-body-sm text-outline">记录每个月的预算调整历史与超支警告触发明细</p>
+            </div>
+          </div>
+          <div class="space-y-space-md" id="history-list">
+            <p class="text-body-sm text-on-surface-variant text-center py-space-md">当前周期尚未触发提醒事件</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 设置预算弹窗 -->
+  <div class="fixed inset-0 bg-on-surface/40 backdrop-blur-sm z-50 flex items-center justify-center hidden" id="budget-modal">
+    <div class="bg-surface-container-lowest rounded-xl w-full max-w-lg p-space-xl shadow-2xl relative">
+      <div class="flex items-center justify-between mb-space-lg">
+        <h3 class="font-headline-md text-on-surface">设置新预算</h3>
+        <button class="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center text-outline hover:text-on-surface cursor-pointer" id="close-budget-modal" type="button">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+      <div class="space-y-space-md">
+        <div>
+          <label class="block text-label-md text-on-surface mb-space-xs">本月总预算金额 (¥)</label>
+          <input class="w-full bg-surface-container-low px-space-md py-space-md rounded-xl text-on-surface outline-none focus:ring-2 focus:ring-primary" id="total-amount" inputmode="decimal" type="number"/>
+        </div>
+        <div>
+          <label class="block text-label-md text-on-surface mb-space-xs">分类预算快捷分配</label>
+          <div class="space-y-space-sm max-h-48 overflow-y-auto pr-space-xs" id="cat-budget-inputs"></div>
+        </div>
+      </div>
+      <div class="flex items-center justify-end gap-space-md mt-space-xl">
+        <button class="px-space-lg py-space-sm bg-surface-container-low hover:bg-surface-container-high text-on-surface text-label-md rounded-xl transition-all cursor-pointer" id="cancel-budget" type="button">取消</button>
+        <button class="px-space-lg py-space-sm bg-primary hover:bg-primary/90 text-on-primary text-label-md rounded-xl transition-all shadow-sm cursor-pointer" id="save-budget" type="button">保存并应用</button>
+      </div>
+    </div>
+  </div>
+
+<script type="module">
+  import { guardAuth } from './assets/js/guard.js';
+  import { mountShell } from './assets/js/shell.js';
+  import { showToast } from './assets/js/toast.js';
+  import { getCurrentBudgetSummary, createBudget, removeBudget, WARN_RATIO } from './assets/js/budget.js';
+  import { getCategoriesByOwner, getCurrentOwnerId } from './assets/js/storage.js';
+
+  guardAuth();
+  mountShell('budget');
+
+  function renderAll() {
+    const s = getCurrentBudgetSummary();
+    // 总预算
+    const pct = (s.total.percent * 100).toFixed(1);
+    document.getElementById('total-budget').innerText = `¥${s.total.amount.toFixed(2)}`;
+    document.getElementById('total-used').innerText = `¥${s.total.used.toFixed(2)}`;
+    document.getElementById('total-left').innerText = `¥${Math.max(0, s.total.amount - s.total.used).toFixed(2)}`;
+    document.getElementById('progress-label').innerText = `总预算消耗进度 (${pct}%)`;
+    const bar = document.getElementById('progress-bar');
+    bar.style.width = Math.min(100, s.total.percent * 100) + '%';
+    bar.className = s.total.percent >= 1 ? 'bg-error h-full rounded-full transition-all duration-500'
+      : s.total.percent >= WARN_RATIO ? 'bg-warm-amber h-full rounded-full transition-all duration-500'
+      : 'bg-primary h-full rounded-full transition-all duration-500';
+    document.getElementById('progress-status').innerText = s.total.amount === 0 ? '未设置预算'
+      : s.total.percent >= 1 ? '已超支'
+      : s.total.percent >= WARN_RATIO ? '接近上限'
+      : '正常管控中';
+    const now = new Date();
+    document.getElementById('budget-period-label').innerText = `${now.getFullYear()}年 ${now.getMonth() + 1}月 预算总览`;
+
+    // 健康度
+    if (s.total.amount > 0) {
+      const score = Math.max(0, Math.round(100 - Math.max(0, s.total.percent - 1) * 100));
+      document.getElementById('health-score').innerText = score >= 80 ? `良好 (${score}分)` : score >= 60 ? `一般 (${score}分)` : `需注意 (${score}分)`;
+      const overspend = s.categories.filter(c => c.percent >= 1);
+      document.getElementById('overspend-cats').innerText = overspend.length ? overspend.map(c => c.name).join('、') : '无';
+      document.getElementById('health-summary').innerText = overspend.length
+        ? `本月 ${overspend.map(c => c.name).join('、')} 已超出预算，建议在月底前控制同类开支。`
+        : '当前所有分类预算执行良好，继续保持！';
+    } else {
+      document.getElementById('health-score').innerText = '--';
+      document.getElementById('overspend-cats').innerText = '--';
+    }
+
+    // 分类预算
+    const list = document.getElementById('category-list');
+    const empty = document.getElementById('cat-empty');
+    if (s.categories.length === 0) {
+      empty.classList.remove('hidden');
+      list.querySelectorAll(':scope > div:not(#cat-empty)').forEach(n => n.remove());
+    } else {
+      empty.classList.add('hidden');
+      list.querySelectorAll(':scope > div:not(#cat-empty)').forEach(n => n.remove());
+      list.insertAdjacentHTML('beforeend', s.categories.map(c => {
+        const pct = (c.percent * 100).toFixed(0);
+        const status = c.percent >= 1 ? 'overspent' : c.percent >= WARN_RATIO ? 'warning' : 'normal';
+        const barColor = status === 'overspent' ? 'bg-error' : status === 'warning' ? 'bg-warm-amber' : 'bg-primary';
+        const tagBg = status === 'overspent' ? 'bg-error/10 text-error' : status === 'warning' ? 'bg-warm-amber/10 text-warm-amber' : 'bg-primary/10 text-primary';
+        const tagText = status === 'overspent' ? `已超支` : status === 'warning' ? `预警 ${pct}%` : `${pct}%`;
+        const remaining = Math.max(0, c.amount - c.used);
+        return `<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm hover:shadow-md transition-all relative overflow-hidden">
+          ${status === 'overspent' ? '<div class="absolute top-0 right-0 bg-error text-on-error text-[10px] font-bold px-space-md py-1 rounded-bl-xl">已超支</div>' : ''}
+          ${status === 'warning' ? '<div class="absolute top-0 right-0 bg-warm-amber text-on-surface text-[10px] font-bold px-space-md py-1 rounded-bl-xl">预警 ' + pct + '%</div>' : ''}
+          <div class="flex items-center justify-between mb-space-md">
+            <div class="flex items-center gap-space-md">
+              <div class="w-10 h-10 rounded-xl ${status === 'overspent' ? 'bg-error/10 text-error' : status === 'warning' ? 'bg-warm-amber/10 text-warm-amber' : 'bg-primary/10 text-primary'} flex items-center justify-center">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">${c.icon}</span>
+              </div>
+              <div>
+                <h3 class="font-headline-sm text-on-surface">${c.name}</h3>
+                <span class="text-body-sm ${status === 'overspent' ? 'text-error' : 'text-outline'}">${status === 'overspent' ? '超支 ¥' + (c.used - c.amount).toFixed(2) : '剩余 ¥' + remaining.toFixed(2)}</span>
+              </div>
+            </div>
+            <span class="text-label-sm ${tagBg} px-space-sm py-space-xs rounded-full">${tagText}</span>
+          </div>
+          <div class="flex justify-between items-end mb-space-sm">
+            <span class="text-body-sm text-outline">已用 ¥${c.used.toFixed(2)}</span>
+            <span class="text-body-md font-bold text-on-surface">总额 ¥${c.amount.toFixed(2)}</span>
+          </div>
+          <div class="w-full bg-surface-container-low h-2 rounded-full overflow-hidden">
+            <div class="${barColor} h-full rounded-full" style="width:${Math.min(100, c.percent * 100)}%"></div>
+          </div>
+          <div class="mt-space-sm flex justify-end">
+            <button class="text-body-sm text-outline hover:text-error" data-remove="${c.id}" type="button">移除</button>
+          </div>
+        </div>`;
+      }).join(''));
+      list.querySelectorAll('[data-remove]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (confirm('确认移除该分类预算？')) {
+            removeBudget(btn.dataset.remove);
+            renderAll();
+            showToast('已移除预算');
+          }
+        });
+      });
+    }
+
+    // 触发提醒（PRD F5）
+    s.categories.forEach(c => {
+      if (c.percent >= 1) {
+        // 不重复 toast（仅在状态变化时）
+      } else if (c.percent >= WARN_RATIO) {
+        // 同样不重复
+      }
+    });
+  }
+
+  // ---- 设置预算弹窗 ----
+  const modal = document.getElementById('budget-modal');
+  function openModal() {
+    const ownerId = getCurrentOwnerId();
+    const cats = getCategoriesByOwner(ownerId).filter(c => c.type === 'expense');
+    document.getElementById('cat-budget-inputs').innerHTML = cats.map(c => `
+      <div class="flex items-center justify-between bg-surface-container-low p-space-sm rounded-xl">
+        <span class="text-body-md text-on-surface">${c.name}</span>
+        <input class="w-28 bg-surface px-3 py-1 rounded text-right text-on-surface outline-none focus:ring-2 focus:ring-primary" data-cat="${c.id}" inputmode="decimal" type="number" placeholder="0"/>
+      </div>
+    `).join('');
+    // 预填当前总预算
+    const s = getCurrentBudgetSummary();
+    document.getElementById('total-amount').value = s.total.amount || '';
+    modal.classList.remove('hidden');
+  }
+  function closeModal() { modal.classList.add('hidden'); }
+  document.getElementById('open-budget-modal').addEventListener('click', openModal);
+  document.getElementById('close-budget-modal').addEventListener('click', closeModal);
+  document.getElementById('cancel-budget').addEventListener('click', closeModal);
+
+  document.getElementById('save-budget').addEventListener('click', () => {
+    const total = Number(document.getElementById('total-amount').value);
+    if (total > 0) createBudget({ scope: 'total', amount: total });
+    document.querySelectorAll('[data-cat]').forEach(input => {
+      const v = Number(input.value);
+      if (v > 0) createBudget({ scope: 'category', categoryId: input.dataset.cat, amount: v });
+    });
+    closeModal();
+    showToast('预算设置已成功更新！', 'success');
+    renderAll();
+  });
+
+  // 测试提醒
+  document.getElementById('simulate-80').addEventListener('click', () => {
+    showToast('【预算预警】「示例分类」已消耗达 85%，请注意合理控制开支！', 'warning');
+  });
+  document.getElementById('simulate-100').addEventListener('click', () => {
+    showToast('【超支警示】「示例分类」已达 100% 预算上限并产生超支！', 'error');
+  });
+  document.getElementById('simulate-warn').addEventListener('click', () => {
+    showToast('【预算预警】「示例分类」已消耗达 85%，请注意合理控制开支！', 'warning');
+  });
+
+  renderAll();
+</script>
+</body>
+</html>

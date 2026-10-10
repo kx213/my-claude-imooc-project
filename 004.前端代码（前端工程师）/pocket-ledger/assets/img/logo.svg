@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="口袋账本 Logo">
+  <defs>
+    <linearGradient id="mintGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4FB3A9"/>
+      <stop offset="100%" stop-color="#006A63"/>
+    </linearGradient>
+  </defs>
+  <!-- 圆角方块底 -->
+  <rect x="6" y="6" width="52" height="52" rx="14" ry="14" fill="url(#mintGrad)"/>
+  <!-- 钱包主体 -->
+  <path d="M18 24 L42 24 Q46 24 46 28 L46 44 Q46 48 42 48 L22 48 Q18 48 18 44 L18 28 Q18 24 22 24 Z"
+        fill="#ffffff" opacity="0.95"/>
+  <!-- 钱包折边 -->
+  <path d="M22 24 L40 24 L40 19 Q40 17 38 17 L26 17 Q24 17 24 19 L24 24"
+        fill="none" stroke="#ffffff" stroke-width="2" opacity="0.7"/>
+  <!-- 铜币 -->
+  <circle cx="42" cy="36" r="5" fill="#F5A25D"/>
+  <text x="42" y="40" text-anchor="middle" font-family="Plus Jakarta Sans, system-ui" font-size="9" font-weight="700" fill="#ffffff">¥</text>
+  <!-- 装饰点 -->
+  <circle cx="14" cy="14" r="2" fill="#ffffff" opacity="0.4"/>
+  <circle cx="54" cy="50" r="2" fill="#ffffff" opacity="0.4"/>
+</svg>
